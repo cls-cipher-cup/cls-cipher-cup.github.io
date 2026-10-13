@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#05070d" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <link rel="icon" type="image/png" href="/img/icon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/img/icon/favicon.svg" />
+  <link rel="shortcut icon" href="/img/icon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/icon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Cipher Cup" />
+  <link rel="manifest" href="/img/icon/site.webmanifest" />
+  <title>CLS Cipher Cup</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #05070d;
+      --panel: rgba(13, 19, 31, .76);
+      --text: #edf4ff;
+      --muted: #8c9bb2;
+      --blue: #74baff;
+      --line: rgba(160, 196, 238, .15);
+      --page-pad: clamp(20px, 5vw, 76px);
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      background: var(--bg);
+      scroll-behavior: auto;
+      scroll-snap-type: none;
+    }
+    html,
+    body {
+      scrollbar-width: none;      /* Firefox */
+      -ms-overflow-style: none;   /* 舊版 Edge / IE */
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;              /* Chrome / Edge / Safari */
+      width: 0;
+      height: 0;
+    }
+    html.home-snap {
+      scroll-snap-type: y mandatory;
+    }
+
+    html.home-snap #home {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    html.home-snap #overview {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans HK",
+                   "PingFang HK", "Microsoft JhengHei", sans-serif;
+      overflow-x: hidden;
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+
+    .page {
+      position: relative;
+      min-height: 100svh;
+      scroll-snap-align: start;
+      isolation: isolate;
+      overflow: clip;
+    }
+
+    /* Home */
+    #home {
+      display: grid;
+      place-items: center;
+      min-height: 100svh;
+      background:
+        radial-gradient(ellipse at 50% 42%, rgba(13, 39, 75, .38) 0%, rgba(7, 15, 29, .2) 34%, transparent 67%),
+        radial-gradient(ellipse at 50% 100%, rgba(9, 28, 55, .16), transparent 56%),
+        #05070d;
+    }
+    #mesh {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: .9;
+    }
+    .home-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at center, transparent 30%, rgba(2, 4, 9, .24) 74%, rgba(2, 4, 9, .76) 130%),
+        linear-gradient(180deg, rgba(2, 4, 9, .14), transparent 24%, transparent 78%, rgba(2, 4, 9, .42));
+    }
+    .hero {
+      position: relative;
+      z-index: 1;
+      width: min(620px, calc(100% - 40px));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(28px, 5vh, 46px);
+      padding-bottom: 3vh;
+    }
+    .brand-logo {
+      display: block;
+      width: min(440px, 82vw);
+      max-height: 30svh;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 32px rgba(37, 113, 208, .11));
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .cipher-form {
+      width: min(510px, 100%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px;
+      border: 1px solid rgba(235, 244, 255, .28);
+      border-radius: 999px;
+      background:
+        linear-gradient(150deg, rgba(255,255,255,.16), rgba(255,255,255,.055) 46%, rgba(190,215,255,.075)),
+        rgba(232, 241, 255, .075);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.22),
+        inset 0 -1px 0 rgba(255,255,255,.035),
+        0 12px 42px rgba(0,0,0,.22),
+        0 0 36px rgba(33, 100, 180, .055);
+      -webkit-backdrop-filter: blur(28px) saturate(145%);
+      backdrop-filter: blur(28px) saturate(145%);
+      transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .cipher-form:focus-within {
+      border-color: rgba(125, 190, 255, .56);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.24),
+        0 0 0 3px rgba(75, 151, 232, .08),
+        0 12px 44px rgba(0,0,0,.24),
+        0 0 30px rgba(43, 127, 221, .12);
+    }
+    .cipher-input {
+      flex: 1;
+      min-width: 0;
+      padding: 13px 17px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #f3f7ff;
+      font-size: 15px;
+      letter-spacing: .025em;
+    }
+    .cipher-input::placeholder { color: rgba(223, 233, 249, .61); }
+    .submit-button {
+      flex: 0 0 46px;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.32);
+      border-radius: 50%;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.28), rgba(255,255,255,.1)),
+        rgba(215, 231, 255, .14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 3px 12px rgba(0,0,0,.12);
+      -webkit-backdrop-filter: blur(34px) saturate(165%);
+      backdrop-filter: blur(34px) saturate(165%);
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .submit-button:hover {
+      transform: translateX(2px);
+      background: rgba(205, 229, 255, .25);
+      border-color: rgba(255,255,255,.48);
+    }
+    .submit-button:active { transform: scale(.96); }
+    .submit-button svg { width: 21px; height: 21px; }
+    .submit-status {
+      min-height: 20px;
+      margin: -18px 0 0;
+      color: #b8c8df;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      bottom: max(24px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      border: 0;
+      background: transparent;
+      color: rgba(196, 216, 243, .76);
+      cursor: pointer;
+      font-size: 10px;
+      letter-spacing: .2em;
+      transition: color .2s ease;
+    }
+    .scroll-cue:hover { color: #fff; }
+    .scroll-cue svg { width: 20px; height: 20px; animation: cue-bob 2.2s ease-in-out infinite; }
+    @keyframes cue-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(5px); }
+    }
+
+    /* Floating navigation only appears after leaving the hero */
+    .site-nav {
+      position: fixed;
+      z-index: 20;
+      top: 16px;
+      left: 50%;
+      width: min(1120px, calc(100% - 32px));
+      transform: translate(-50%, -18px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 11px 14px 11px 20px;
+      border: 1px solid rgba(210, 229, 255, .13);
+      border-radius: 999px;
+      background: rgba(8, 12, 21, .66);
+      box-shadow: 0 12px 42px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.05);
+      -webkit-backdrop-filter: blur(24px) saturate(145%);
+      backdrop-filter: blur(24px) saturate(145%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .28s ease, transform .28s ease, visibility .28s;
+    }
+    .site-nav.visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate(-50%, 0);
+    }
+    .nav-brand {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: flex-start;
+      width: 150px;
+      height: 32px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .nav-brand img {
+      display: block;
+      height: 100%;
+      object-fit: contain;
+      object-position: left center;
+      user-select: none;
+      -webkit-user-drag: none;
+      filter: drop-shadow(0 0 8px rgba(74, 151, 245, .12));
+      transition: filter .25s ease, opacity .25s ease;
+    }
+
+    .nav-brand:hover img {
+      filter: drop-shadow(0 0 12px rgba(105, 180, 255, .35));
+      opacity: .9;
+    }
+    .nav-links { display: flex; align-items: center; gap: clamp(12px, 2.8vw, 30px); }
+    .nav-links a {
+      position: relative;
+      padding: 7px 0;
+      color: #aab8cd;
+      text-decoration: none;
+      font-size: 13px;
+      white-space: nowrap;
+      transition: color .2s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { color: #f4f8ff; }
+    .nav-links a.active::after {
+      position: absolute;
+      right: 0; bottom: 0; left: 0;
+      height: 1px;
+      background: #7abaff;
+      content: "";
+      box-shadow: 0 0 9px rgba(122,186,255,.65);
+    }
+
+    /* Content sections */
+    #overview {
+      padding: clamp(100px, 12vh, 140px) var(--page-pad) 90px;
+      background:
+        radial-gradient(ellipse at 85% 8%, rgba(13, 43, 79, .17), transparent 45%),
+        #070a11;
+    }
+    .content-wrap { width: min(980px, 100%); margin: 0 auto; }
+    .section-kicker {
+      margin: 0 0 12px;
+      color: #78b7f7;
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: .19em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    .section-title {
+      margin-bottom: 14px;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 600;
+      letter-spacing: -.04em;
+      line-height: 1.18;
+    }
+    .section-lead {
+      max-width: 680px;
+      color: #a4b1c5;
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .progress-panel {
+      margin-bottom: clamp(56px, 9vh, 88px);
+      padding: clamp(22px, 4vw, 34px);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(20, 35, 56, .52), rgba(9, 14, 24, .68)),
+        rgba(10, 15, 25, .75);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 18px 60px rgba(0,0,0,.12);
+    }
+    .progress-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 23px;
+    }
+    .progress-title {
+      margin: 0 0 7px;
+      font-size: clamp(19px, 2.5vw, 24px);
+      font-weight: 550;
+      letter-spacing: -.025em;
+    }
+    .progress-subtitle { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .progress-percent {
+      color: #d8eaff;
+      font-size: clamp(24px, 3vw, 32px);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -.04em;
+      white-space: nowrap;
+    }
+    .progress-track {
+      height: 6px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgba(190, 211, 240, .1);
+    }
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #397fc3, #8bc9ff);
+      box-shadow: 0 0 16px rgba(91, 166, 238, .35);
+      transition: width .6s ease;
+    }
+    .progress-dates {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 11px;
+      color: #65748a;
+      font-size: 11px;
+    }
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .time-unit {
+      min-width: 0;
+      padding: 15px 10px 13px;
+      border: 1px solid rgba(160, 196, 238, .1);
+      border-radius: 13px;
+      background: rgba(3, 7, 14, .27);
+      text-align: center;
+    }
+    .time-number {
+      display: block;
+      color: #edf5ff;
+      font-size: clamp(23px, 4vw, 34px);
+      font-weight: 550;
+      line-height: 1.25;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -.035em;
+    }
+    .time-label {
+      display: block;
+      margin-top: 7px;
+      color: #7889a1;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .countdown-caption {
+      margin: 13px 0 0;
+      color: #8392a8;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .rules-heading { margin-bottom: 34px; }
+    .rules-list { display: grid; gap: 0; }
+    .rule-row {
+      display: grid;
+      grid-template-columns: 64px minmax(0, 1fr);
+      gap: 18px;
+      padding: 25px 0;
+      border-top: 1px solid rgba(159, 188, 225, .13);
+    }
+    .rule-number {
+      padding-top: 3px;
+      color: #679ed8;
+      font-size: 12px;
+      letter-spacing: .08em;
+      font-variant-numeric: tabular-nums;
+    }
+    .rule-row h3 { margin-bottom: 8px; font-size: 17px; font-weight: 550; }
+    .rule-row p { max-width: 740px; margin-bottom: 0; color: #9baac0; font-size: 14px; line-height: 1.9; }
+
+    #past-puzzles, #about {
+      padding: 100px var(--page-pad);
+      background: #05070d;
+      border-top: 1px solid rgba(159, 188, 225, .08);
+    }
+    .empty-state {
+      margin-top: 28px;
+      padding: 28px;
+      border: 1px dashed rgba(159, 188, 225, .18);
+      border-radius: 16px;
+      color: #8594aa;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .site-footer {
+      padding: 28px var(--page-pad) 36px;
+      border-top: 1px solid rgba(159, 188, 225, .08);
+      color: #68778d;
+      background: #05070d;
+      font-size: 11px;
+      letter-spacing: .04em;
+      text-align: center;
+    }
+
+    @media (max-width: 620px) {
+      .hero { gap: 30px; padding-bottom: 5vh; }
+      .brand-logo { width: min(360px, 80vw); }
+      .cipher-input { padding: 12px 11px; font-size: 14px; }
+      .submit-button { flex-basis: 43px; width: 43px; height: 43px; }
+      .site-nav { top: 9px; width: calc(100% - 18px); padding: 9px 12px; gap: 12px; }
+      .nav-brand { font-size: 12px; }
+      .nav-links { gap: 12px; }
+      .nav-links a { font-size: 11px; }
+      #overview { padding-top: 94px; }
+      .progress-head { gap: 10px; }
+      .countdown { gap: 6px; }
+      .time-unit { padding: 12px 5px; }
+      .time-label { font-size: 9px; letter-spacing: .06em; }
+      .rule-row { grid-template-columns: 38px minmax(0, 1fr); gap: 10px; }
+    }
+    @media (max-width: 390px) {
+      .nav-brand { max-width: 92px; white-space: normal; text-align: left; line-height: 1.25; }
+      .nav-links { gap: 9px; }
+      .nav-links a { font-size: 10px; }
+      .progress-panel { padding: 18px; }
+      .progress-percent { font-size: 23px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" id="siteNav" aria-label="主導航">
+    <button class="nav-brand" id="navHome" type="button" aria-label="返回首頁">
+      <img src="img/logo/Cipher Cup Horizontal.png" alt="CLS Cipher Cup" />
+    </button>
+    <div class="nav-links">
+      <a href="#overview" data-section="overview">規則簡介</a>
+      <a href="#past-puzzles" data-section="past-puzzles">歷屆題目</a>
+      <a href="#about" data-section="about">關於解謎杯</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="page" id="home" aria-label="密文輸入首頁">
+      <canvas id="mesh" aria-hidden="true"></canvas>
+      <div class="home-vignette" aria-hidden="true"></div>
+
+      <div class="hero">
+        <img class="brand-logo" src="img/logo/Cipher Cup T.png" alt="CLS Cipher Cup" />
+        <form class="cipher-form" id="cipherForm" autocomplete="off">
+          <input
+            class="cipher-input"
+            id="cipherInput"
+            name="cipher"
+            type="text"
+            placeholder="輸入你找到的密文…"
+            aria-label="輸入密文"
+            spellcheck="false"
+            autocapitalize="off"
+            required
+          />
+          <button class="submit-button" type="submit" aria-label="提交密文">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4.75 12h14.5M13 5.75 19.25 12 13 18.25" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+        <p class="submit-status" id="submitStatus" role="status" aria-live="polite"></p>
+      </div>
+
+      <button class="scroll-cue" id="scrollCue" type="button" aria-label="向下瀏覽規則簡介">
+        <span>SCROLL TO EXPLORE</span>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </section>
+
+    <section class="page" id="overview" aria-labelledby="overviewTitle">
+      <div class="content-wrap">
+        <section class="progress-panel" aria-labelledby="progressTitle">
+          <div class="progress-head">
+            <div>
+              <p class="section-kicker">CURRENT MONTH</p>
+              <h2 class="progress-title" id="progressTitle">本月解謎進度</h2>
+              <p class="progress-subtitle" id="monthDescription">每月一日開啟新挑戰，月底公布謎底。</p>
+            </div>
+            <div class="progress-percent" id="progressPercent">—%</div>
+          </div>
+          <div class="progress-track" id="progressTrack" role="progressbar" aria-label="本月時間進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-dates">
+            <span id="periodStart">本月開始</span>
+            <span id="periodEnd">本月結束</span>
+          </div>
+
+          <div class="countdown" aria-label="距離本月謎底公布的倒計時">
+            <div class="time-unit"><span class="time-number" id="days">00</span><span class="time-label">Days</span></div>
+            <div class="time-unit"><span class="time-number" id="hours">00</span><span class="time-label">Hours</span></div>
+            <div class="time-unit"><span class="time-number" id="minutes">00</span><span class="time-label">Minutes</span></div>
+            <div class="time-unit"><span class="time-number" id="seconds">00</span><span class="time-label">Seconds</span></div>
+          </div>
+          <p class="countdown-caption" id="countdownCaption">倒計時以香港時間計算，暫定於本月最後一日 23:59 公布謎底。</p>
+        </section>
+
+        <section class="rules-heading">
+          <p class="section-kicker">HOW TO PLAY</p>
+          <h1 class="section-title" id="overviewTitle">解開線索，探索未知。</h1>
+          <p class="section-lead">
+            CLS Cipher Cup 是由 IT 學會舉辦的月度解謎活動。每個月，你都需要從文字、圖片、影片或文章中尋找隱藏線索，逐步破解三組密文，找出當月謎底。
+          </p>
+        </section>
+
+        <div class="rules-list">
+          <article class="rule-row">
+            <span class="rule-number">01 / 01</span>
+            <div>
+              <h3>接收每月線索</h3>
+              <p>每月一日，IT 學會會透過電郵發布第一道謎題。仔細觀察內容，找出隱藏其中的第一組密文。</p>
+            </div>
+          </article>
+          <article class="rule-row">
+            <span class="rule-number">02 / 02</span>
+            <div>
+              <h3>逐層破解密文</h3>
+              <p>將密文輸入首頁的指定欄位，通過驗證後即可取得下一階段線索。謎題共設三個層次，各階段可能互相關聯。</p>
+            </div>
+          </article>
+          <article class="rule-row">
+            <span class="rule-number">03 / 03</span>
+            <div>
+              <h3>提交當月謎底</h3>
+              <p>第三組密文即為當月謎底。成功提交正確的第三組密文後，即完成當月挑戰，並按排名獲得全年積分。</p>
+            </div>
+          </article>
+          <article class="rule-row">
+            <span class="rule-number">04 / 04</span>
+            <div>
+              <h3>月度獎勵與全年排名</h3>
+              <p>每月第一名可獲得證書、當月限定 3D 打印立牌及零食。每月積分會累積至全年排行榜，年度總排名頭四名均可獲得年度獎勵。</p>
+            </div>
+          </article>
+          <article class="rule-row">
+            <span class="rule-number">05 / 05</span>
+            <div>
+              <h3>積分制度</h3>
+              <p>月度第一至第九名或以後的積分依次為 25、18、15、12、10、8、6、4、1 分。第九名或以後的參加者須成功提交正確第三組密文，方可獲得 1 分。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="past-puzzles" aria-labelledby="pastTitle">
+      <div class="content-wrap">
+        <p class="section-kicker">ARCHIVE</p>
+        <h2 class="section-title" id="pastTitle">歷屆題目</h2>
+        <p class="section-lead">重溫過往月份的挑戰與解謎思路。正式上線後，可在這裡加入各月份的題目、謎底公布及解題紀錄。</p>
+        <div class="empty-state">歷屆題目即將開放。<br />尚未公布謎底的題目及線索不應在此提前公開。</div>
+      </div>
+    </section>
+
+    <section class="page" id="about" aria-labelledby="aboutTitle">
+      <div class="content-wrap">
+        <p class="section-kicker">ABOUT THE CUP</p>
+        <h2 class="section-title" id="aboutTitle">關於 CLS Cipher Cup</h2>
+        <p class="section-lead">CLS Cipher Cup 由 IT 學會策劃，透過每月更新的多層次解謎挑戰，結合密碼學、資訊分析與邏輯推理，鼓勵同學以不同角度探索資訊科技。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">CLS CIPHER CUP · IT CLUB</footer>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const home = document.getElementById("home");
+      const nav = document.getElementById("siteNav");
+      const html = document.documentElement;
+      const overview = document.getElementById("overview");
+
+      let homeWheelLocked = false;
+      let homeWheelUnlockTimer = 0;
+
+      function isHomeAtTop() {
+        return window.scrollY < Math.max(40, home.offsetHeight * 0.12);
+      }
+
+      function enableHomeSnap(enabled) {
+        html.classList.toggle("home-snap", enabled);
+      }
+
+      // 只有首頁啟用吸附；離開首頁後不再強制快速滾動
+      function updateHomeSnap() {
+        enableHomeSnap(isHomeAtTop());
+      }
+
+      window.addEventListener("wheel", event => {
+        if (reduceMotion || homeWheelLocked || !isHomeAtTop()) return;
+        if (Math.abs(event.deltaY) < 8) return;
+
+        // 只攔截首頁向下滾動；向上滾動及後續頁面不受影響
+        if (event.deltaY <= 0) return;
+
+        event.preventDefault();
+        homeWheelLocked = true;
+        enableHomeSnap(true);
+
+        overview.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+        window.clearTimeout(homeWheelUnlockTimer);
+        homeWheelUnlockTimer = window.setTimeout(() => {
+          homeWheelLocked = false;
+          updateHomeSnap();
+        }, 1000);
+      }, { passive: false });
+
+      window.addEventListener("scroll", updateHomeSnap, { passive: true });
+      window.addEventListener("resize", updateHomeSnap, { passive: true });
+
+      updateHomeSnap();
+      const navHome = document.getElementById("navHome");
+      const scrollCue = document.getElementById("scrollCue");
+      const sections = [...document.querySelectorAll("main > section[id]")];
+      const navLinks = [...document.querySelectorAll(".nav-links a")];
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function scrollToSection(id) {
+        const target = document.getElementById(id);
+        if (!target) return;
+        target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      }
+
+      scrollCue.addEventListener("click", () => scrollToSection("overview"));
+      navHome.addEventListener("click", () => scrollToSection("home"));
+      navLinks.forEach(link => {
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          scrollToSection(link.dataset.section);
+        });
+      });
+
+      const homeObserver = new IntersectionObserver(entries => {
+        const entry = entries[0];
+        nav.classList.toggle("visible", !entry.isIntersecting);
+      }, { threshold: 0.12 });
+      homeObserver.observe(home);
+
+      const sectionObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          navLinks.forEach(link => {
+            link.classList.toggle("active", link.dataset.section === entry.target.id);
+          });
+        });
+      }, { rootMargin: "-25% 0px -55% 0px", threshold: 0 });
+      sections.slice(1).forEach(section => sectionObserver.observe(section));
+
+      // Month progress and countdown use Hong Kong time (UTC+8), independent of the visitor's timezone.
+      const HKT_OFFSET_MS = 8 * 60 * 60 * 1000;
+      const pad = n => String(n).padStart(2, "0");
+      const dateInHKT = date => new Date(date.getTime() + HKT_OFFSET_MS);
+      const formatHKTDate = date => {
+        const d = dateInHKT(date);
+        return `${d.getUTCFullYear()}/${pad(d.getUTCMonth() + 1)}/${pad(d.getUTCDate())}`;
+      };
+
+      function getMonthBounds(now) {
+        const hktNow = dateInHKT(now);
+        const year = hktNow.getUTCFullYear();
+        const month = hktNow.getUTCMonth();
+        const start = Date.UTC(year, month, 1) - HKT_OFFSET_MS;
+        const nextStart = Date.UTC(year, month + 1, 1) - HKT_OFFSET_MS;
+        // Provisional answer release time: 23:59:00 Hong Kong time on the final day.
+        const release = nextStart - 60 * 1000;
+        return { start, nextStart, release, year, month };
+      }
+
+      function updateMonthProgress() {
+        const now = new Date();
+        const { start, nextStart, release, year, month } = getMonthBounds(now);
+        const ratio = Math.max(0, Math.min(1, (now.getTime() - start) / (nextStart - start)));
+        const percent = Math.floor(ratio * 100);
+        document.getElementById("progressFill").style.width = `${ratio * 100}%`;
+        document.getElementById("progressPercent").textContent = `${percent}%`;
+        document.getElementById("progressTrack").setAttribute("aria-valuenow", String(percent));
+        document.getElementById("progressTitle").textContent = `${year} 年 ${month + 1} 月解謎進度`;
+        document.getElementById("monthDescription").textContent = "本月時間進度 · 每月一日開啟新挑戰";
+        document.getElementById("periodStart").textContent = formatHKTDate(new Date(start));
+        document.getElementById("periodEnd").textContent = formatHKTDate(new Date(nextStart - 1));
+
+        let remaining = Math.max(0, release - now.getTime());
+        const days = Math.floor(remaining / 86400000); remaining %= 86400000;
+        const hours = Math.floor(remaining / 3600000); remaining %= 3600000;
+        const minutes = Math.floor(remaining / 60000); remaining %= 60000;
+        const seconds = Math.floor(remaining / 1000);
+
+        document.getElementById("days").textContent = pad(days);
+        document.getElementById("hours").textContent = pad(hours);
+        document.getElementById("minutes").textContent = pad(minutes);
+        document.getElementById("seconds").textContent = pad(seconds);
+        document.getElementById("countdownCaption").textContent =
+          now.getTime() >= release
+            ? "本月謎底公布時間已到。實際公布狀態請以 IT 學會公告為準。"
+            : `距離暫定謎底公布時間尚有一段時間 · 香港時間 ${formatHKTDate(new Date(release))} 23:59`;
+      }
+      updateMonthProgress();
+      window.setInterval(updateMonthProgress, 1000);
+
+      // Low-amplitude inward-curved triangular mesh with sparse, slowly changing glows.
+      const canvas = document.getElementById("mesh");
+      const ctx = canvas.getContext("2d", { alpha: true });
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let width = 0, height = 0, dpr = 1, points = [], triangles = [], edges = [];
+      let rafId = 0, lastFrame = 0;
+      const spacing = 62;
+      const glowNodes = [];
+      const rand = (min, max) => min + Math.random() * (max - min);
+
+      function warpPoint(x, y, cols, rows) {
+        const cx = width / 2, cy = height / 2;
+        const dx = x - cx, dy = y - cy;
+        const nx = dx / Math.max(cx, 1), ny = dy / Math.max(cy, 1);
+        const r2 = nx * nx + ny * ny;
+        // Small negative radial displacement: subtle inward/funnel-like curvature, not a bulging fisheye.
+        const strength = 0.052;
+        const factor = 1 - strength * r2;
+        return { x: cx + dx * factor, y: cy + dy * factor };
+      }
+
+      function resizeCanvas() {
+        const rect = home.getBoundingClientRect();
+        width = rect.width;
+        height = rect.height;
+        dpr = Math.min(window.devicePixelRatio || 1, 1.6);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buildMesh();
+        drawMesh(performance.now());
+      }
+
+      function buildMesh() {
+        const cols = Math.ceil(width / spacing) + 3;
+        const rows = Math.ceil(height / spacing) + 3;
+        points = [];
+        triangles = [];
+        edges = [];
+        glowNodes.length = 0;
+
+        for (let row = -1; row < rows; row++) {
+          points[row + 1] = [];
+          for (let col = -1; col < cols; col++) {
+            const baseX = col * spacing + ((row & 1) ? spacing / 2 : 0);
+            const baseY = row * spacing * 0.866;
+            const jitterX = rand(-3.5, 3.5);
+            const jitterY = rand(-3.5, 3.5);
+            const warped = warpPoint(baseX + jitterX, baseY + jitterY, cols, rows);
+            points[row + 1][col + 1] = { ...warped, phase: rand(0, Math.PI * 2) };
+          }
+        }
+
+        for (let r = 0; r < points.length - 1; r++) {
+          for (let c = 0; c < points[r].length - 1; c++) {
+            const a = points[r][c], b = points[r][c + 1];
+            const d = points[r + 1][c], e = points[r + 1][c + 1];
+            if (!a || !b || !d || !e) continue;
+            triangles.push([a, b, d], [b, d, e]);
+            edges.push([a, b], [a, d], [b, d], [b, e], [d, e]);
+          }
+        }
+        // Select a sparse set of fixed edges for independent light pulses.
+        const count = Math.max(12, Math.round((width * height) / 32000));
+        for (let i = 0; i < count; i++) {
+          glowNodes.push({
+            edge: edges[Math.floor(Math.random() * edges.length)],
+            phase: rand(0, Math.PI * 2),
+            speed: rand(.00035, .0010),
+            strength: rand(.45, 1.0)
+          });
+        }
+      }
+
+      function drawMesh(time) {
+        ctx.clearRect(0, 0, width, height);
+        ctx.lineWidth = .72;
+        ctx.strokeStyle = "rgba(105, 151, 207, 0.105)";
+        ctx.beginPath();
+        for (const edge of edges) {
+          ctx.moveTo(edge[0].x, edge[0].y);
+          ctx.lineTo(edge[1].x, edge[1].y);
+        }
+        ctx.stroke();
+
+        if (!prefersReducedMotion) {
+          for (const glow of glowNodes) {
+            const wave = (Math.sin(time * glow.speed + glow.phase) + 1) / 2;
+            const alpha = Math.pow(wave, 3) * glow.strength;
+            if (alpha < .035) continue;
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(glow.edge[0].x, glow.edge[0].y);
+            ctx.lineTo(glow.edge[1].x, glow.edge[1].y);
+            ctx.strokeStyle = `rgba(105, 190, 255, ${Math.min(.95, alpha * .9)})`;
+            ctx.lineWidth = 1 + alpha * 1.15;
+            ctx.shadowColor = `rgba(48, 139, 255, ${Math.min(1, alpha)})`;
+            ctx.shadowBlur = 8 + alpha * 12;
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      }
+
+      function animate(time) {
+        if (time - lastFrame >= 42) {
+          drawMesh(time);
+          lastFrame = time;
+        }
+        rafId = window.requestAnimationFrame(animate);
+      }
+
+      const meshObserver = new IntersectionObserver(entries => {
+        const visible = entries[0].isIntersecting;
+        if (visible && !prefersReducedMotion && !rafId) {
+          rafId = window.requestAnimationFrame(animate);
+        } else if (!visible && rafId) {
+          window.cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+      }, { threshold: 0 });
+      meshObserver.observe(home);
+
+      let resizeTimer = 0;
+      window.addEventListener("resize", () => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(resizeCanvas, 100);
+      }, { passive: true });
+      resizeCanvas();
+      if (!prefersReducedMotion) rafId = window.requestAnimationFrame(animate);
+
+      // Front-end placeholder only: no secret answers are embedded in this static file.
+      // Connect this form to a server-side endpoint before using it for a real contest.
+      const cipherForm = document.getElementById("cipherForm");
+      const cipherInput = document.getElementById("cipherInput");
+      const submitStatus = document.getElementById("submitStatus");
+      cipherForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const value = cipherInput.value.trim();
+        if (!value) {
+          submitStatus.textContent = "請先輸入密文。";
+          return;
+        }
+        submitStatus.textContent = "網站驗證功能尚未接駁；正式比賽前需要連接伺服器端驗證。";
+      });
+    })();
+  </script>
+</body>
+</html>
