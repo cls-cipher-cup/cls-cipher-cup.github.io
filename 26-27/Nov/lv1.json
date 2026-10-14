@@ -1,0 +1,10 @@
+{
+  "ciphertext": "MOrSE",
+  "hint": "↘",
+  "mediaUrl": "",
+  "cipherHash": "95cdf4548a6ac3745b8091ebbf6cb26de7f70f4cef9a768dbae28e151c375be0",
+  "encryptedAnswer": "d/zIOl2SlMynNmRd6ChO4cUyScwHLDebe9eYvZZaxuN9dh1n9w5gjw+9YUKjkK24tyfrNQ==",
+  "iv": "YUrLo8dO1RsAtl5Z",
+  "keyObfuscated": "f+U7ET7xK/GMJ3ncgFJsJ1HAArl56xLZEal+f4JR+J8=",
+  "keySalt": "static-xor-v1"
+}
