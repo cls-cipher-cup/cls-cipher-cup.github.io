@@ -1,6 +1,40 @@
 {
   "schemaVersion": 2,
-  "updatedAt": null,
-  "schoolYears": [],
-  "contests": []
+  "updatedAt": "2026-10-14T14:23:41.914Z",
+  "schoolYears": [
+    "26-27"
+  ],
+  "contests": [
+    {
+      "schoolYear": "26-27",
+      "year": 2026,
+      "month": 11,
+      "monthName": "November",
+      "theme": "/rEVErSE/",
+      "endAt": "2026-11-30T23:59:00+08:00",
+      "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSf5-8oTZYHaEBDA5qiTAHxyTN80O7dL210KNNj-sj_3r4AXAQ/viewform",
+      "published": true,
+      "basePath": "26-27/Nov",
+      "levels": [
+        {
+          "ciphertext": "MOrSE",
+          "hint": "↘",
+          "mediaUrl": "",
+          "cipherHash": "95cdf4548a6ac3745b8091ebbf6cb26de7f70f4cef9a768dbae28e151c375be0"
+        },
+        {
+          "ciphertext": "-.-./.-./-.--/.--./-/---/--./.-./.-/.--./..../-.--",
+          "hint": "///////////",
+          "mediaUrl": "",
+          "cipherHash": "b1edaf938c78c6eb2147ea25bcc5630bec673e2ed077dd6b85e3da4ad0b0bb87"
+        },
+        {
+          "ciphertext": "./.../.-./---/--",
+          "hint": "//↺//",
+          "mediaUrl": "",
+          "cipherHash": "d60e36f395c7472d68da8b8d88e6aa5533d346c147abef413da207b2e25f311a"
+        }
+      ]
+    }
+  ]
 }
