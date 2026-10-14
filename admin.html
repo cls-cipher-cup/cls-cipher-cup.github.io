@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#05070d">
+<title>CLS Cipher Cup · 管理面板</title>
+<style>
+:root{color-scheme:dark;--bg:#05070d;--panel:rgba(13,19,31,.76);--line:rgba(160,196,238,.15);--muted:#8c9bb2;--text:#edf4ff;--cyan:#72e4ff;--blue:#74baff;--page-pad:clamp(20px,5vw,76px)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans HK","PingFang HK","Microsoft JhengHei",sans-serif;scrollbar-width:none;-ms-overflow-style:none;overflow-x:hidden}
+html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:none;width:0;height:0}
+button,input{font:inherit}button{color:inherit}
+
+#mesh{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.9}
+.vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(2,4,9,.24) 74%,rgba(2,4,9,.76) 130%),linear-gradient(180deg,rgba(2,4,9,.14),transparent 24%,transparent 78%,rgba(2,4,9,.42))}
+
+.site-nav{position:fixed;z-index:20;top:16px;left:50%;width:min(1120px,calc(100% - 32px));transform:translate(-50%,0);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 14px 11px 20px;border:1px solid rgba(210,229,255,.13);border-radius:999px;background:rgba(8,12,21,.66);box-shadow:0 12px 42px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05);-webkit-backdrop-filter:blur(24px) saturate(145%);backdrop-filter:blur(24px) saturate(145%)}
+.nav-brand{display:flex;flex:0 0 auto;align-items:center;justify-content:flex-start;width:150px;height:32px;padding:0;border:0;background:transparent;cursor:pointer;text-decoration:none}
+.nav-brand img{display:block;height:100%;object-fit:contain;object-position:left center;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 0 8px rgba(74,151,245,.12));transition:filter .25s ease,opacity .25s ease}
+.nav-brand:hover img{filter:drop-shadow(0 0 12px rgba(105,180,255,.35));opacity:.9}
+.nav-links{display:flex;align-items:center;gap:clamp(12px,2.8vw,30px)}
+.nav-links a,.nav-links button{position:relative;padding:7px 0;color:#aab8cd;text-decoration:none;font-size:13px;white-space:nowrap;background:transparent;border:0;cursor:pointer;transition:color .2s ease}
+.nav-links a:hover,.nav-links button:hover{color:#f4f8ff}
+.nav-links a.active{color:#f4f8ff}
+.nav-links a.active::after{position:absolute;right:0;bottom:0;left:0;height:1px;background:#7abaff;content:"";box-shadow:0 0 9px rgba(122,186,255,.65)}
+
+main{position:relative;z-index:1;width:min(1200px,calc(100% - 32px));margin:96px auto 80px;padding:0}
+.welcome{padding:30px 0 22px}
+.kicker{font-size:11px;letter-spacing:.23em;color:var(--cyan);text-transform:uppercase}
+h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
+.sub{color:var(--muted);line-height:1.7}
+.panel{border:1px solid var(--line);background:linear-gradient(135deg,rgba(20,35,56,.52),rgba(9,14,24,.68)),rgba(10,15,25,.75);border-radius:22px;padding:24px;margin:18px 0;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 18px 60px rgba(0,0,0,.12)}
+.panel h2{margin:0 0 18px;font-size:21px;font-weight:550;letter-spacing:-.02em}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:7px;margin:0 0 14px}
+.field label{font-size:13px;color:#c4d0e7}
+.field input,.field textarea,.field select{width:100%;background:rgba(3,7,14,.55);border:1px solid rgba(160,196,238,.15);border-radius:10px;padding:12px;color:var(--text);font:inherit;outline:none;transition:border-color .2s ease,box-shadow .2s ease}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(125,190,255,.56);box-shadow:0 0 0 3px rgba(75,151,232,.08)}
+.field textarea{min-height:90px;resize:vertical}
+.field-row{display:flex;gap:8px;align-items:center}
+.field-row select{flex:1;min-width:0}
+.icon-btn{flex:0 0 auto;width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(160,196,238,.2);background:rgba(23,35,58,.6);color:#dceaff;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .15s ease}
+.icon-btn:hover{background:rgba(40,62,102,.7);border-color:rgba(160,196,238,.4);transform:translateY(-1px)}
+.icon-btn.danger:hover{background:rgba(109,39,56,.7);border-color:rgba(255,140,160,.4)}
+.btn{border:1px solid #9abaff55;background:linear-gradient(135deg,#426fe0,#4a9fc6);color:white;border-radius:10px;padding:11px 16px;font-weight:650;cursor:pointer;transition:transform .15s ease,filter .15s ease}
+.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.btn.secondary{background:#17233a;border-color:rgba(160,196,238,.18)}
+.btn.danger{background:#6d2738;border-color:rgba(255,140,160,.22)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.status{min-height:22px;color:#9decc8;font-size:13px;margin:12px 0 0;white-space:pre-wrap}
+.muted{color:var(--muted);font-size:12px;line-height:1.7}
+.hidden{display:none!important}
+.contest-item{padding:16px;border:1px solid rgba(159,188,225,.12);border-radius:14px;background:rgba(10,16,27,.6);margin:10px 0;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.contest-item strong{display:block;margin-bottom:5px}
+.level{padding:16px;border:1px solid rgba(159,188,225,.12);border-radius:14px;margin:12px 0;background:rgba(10,16,27,.55)}
+.level h3{margin:0 0 14px;color:var(--cyan);font-size:15px}
+.badge{font-size:11px;color:#b5c5e6}
+.hr{border:0;border-top:1px solid rgba(159,188,225,.12);margin:24px 0}
+.path-hint{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#8fb4e2;background:rgba(3,7,14,.5);padding:6px 10px;border-radius:8px;border:1px dashed rgba(160,196,238,.2);margin-top:4px;word-break:break-all}
+@media(max-width:720px){
+ .site-nav{top:9px;width:calc(100% - 18px);padding:9px 12px;gap:12px}
+ .nav-brand{width:110px}
+ .nav-links{gap:12px}
+ .nav-links a,.nav-links button{font-size:11px}
+ .row{grid-template-columns:1fr}
+ .panel{padding:18px}
+ main{width:calc(100% - 20px);margin-top:78px}
+ .contest-item{align-items:flex-start;flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<canvas id="mesh" aria-hidden="true"></canvas><div class="vignette" aria-hidden="true"></div>
+<nav class="site-nav" aria-label="主導航">
+  <a class="nav-brand" href="./index.html" aria-label="返回首頁">
+    <img src="./img/logo/Cipher Cup Horizontal.png" alt="CLS Cipher Cup">
+  </a>
+  <div class="nav-links">
+    <a href="./index.html">返回主頁</a>
+    <button id="logoutBtn" type="button">登出</button>
+  </div>
+</nav>
+<main>
+ <header class="welcome"><div class="kicker">ADMINISTRATION / CLS CIPHER CUP</div><h1>您好，管理員！</h1><div class="sub" id="welcomeSub">請先登入 GitHub 以管理公開儲存庫中的賽事資料。</div></header>
+ <section class="panel" id="loginPanel">
+  <h2>管理員登入</h2>
+  <div class="row">
+   <div class="field"><label for="ghToken">GitHub Personal Access Token</label><input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_…" spellcheck="false"></div>
+   <div class="field"><label for="ghRepo">Repository（owner/repo）</label><input id="ghRepo" placeholder="account/repository" autocomplete="off"></div>
+  </div>
+  <div class="actions"><button class="btn" id="loginBtn">驗證並登入</button></div><p class="status" id="loginStatus" role="status"></p>
+ </section>
+ <div id="dashboard" class="hidden">
+  <section class="panel"><h2>賽事概覽</h2><div class="row"><div class="mini"><div class="badge">本月倒數</div><h3 id="currentMonth">—</h3><p class="muted" id="countdown">—</p></div><div class="mini"><div class="badge">儲存庫</div><h3 id="repoLabel">—</h3><p class="muted">發布或更新後，GitHub Pages 需要一段時間部署。</p></div></div><div class="status" id="globalStatus"></div></section>
+  <section class="panel"><h2>已建立的賽事</h2><p class="muted">只列出已發布的賽事；若月份之間有空缺，主頁會顯示「本月暫無賽事安排」。</p><div id="contestList"></div></section>
+  <section class="panel" id="editorPanel"><h2 id="editorTitle">提交新的賽事題目</h2>
+   <div class="row">
+    <div class="field"><label for="year">年份</label><input id="year" type="number" min="2020" max="2100" value="2026"></div>
+    <div class="field"><label for="month">月份</label><select id="month"><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11" selected>November</option><option value="12">December</option></select></div>
+   </div>
+   <div class="field">
+     <label for="schoolYear">學年（決定儲存資料夾）</label>
+     <div class="field-row">
+       <select id="schoolYear" aria-label="學年"></select>
+       <button class="icon-btn" id="addYearBtn" type="button" title="新增學年" aria-label="新增學年">＋</button>
+       <button class="icon-btn danger" id="removeYearBtn" type="button" title="刪除學年" aria-label="刪除學年">−</button>
+     </div>
+     <div class="path-hint" id="pathHint">資料將儲存於 ./{學年}/{月份縮寫}/lv1.json … lv3.json</div>
+   </div>
+   <div class="field"><label for="theme">賽事主題</label><input id="theme" placeholder="例如：The Lost Signal"></div>
+   <div class="field"><label for="endAt">截止時間（香港時間；ISO 格式）</label><input id="endAt" type="text" placeholder="2026-11-30T23:59:00+08:00"></div>
+   <div class="field"><label for="googleFormUrl">Google Form URL（可留空）</label><input id="googleFormUrl" type="url" placeholder="https://docs.google.com/forms/d/e/…/viewform"></div>
+   <hr class="hr">
+   <div id="levels"></div>
+   <div class="actions"><button class="btn secondary" id="newBtn" type="button">清空／新增題目</button><button class="btn" id="saveBtn" type="button">加密並發布至 GitHub</button></div>
+   <p class="muted">發布時會以 Web Crypto AES-256-GCM 加密明文答案，SHA-256 雜湊用於前端的密文驗證。索引寫入 <code>data/contests.json</code>，各關卡完整資料寫入 <code>./{學年}/{月份縮寫}/lv1.json</code> 等。</p>
+   <p class="status" id="editorStatus" role="status"></p>
+  </section>
+ </div>
+</main>
+<script>
+(() => {
+ const $=s=>document.querySelector(s);
+ const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+ const monthShortNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+ let token='', repo='', branch='main', fileSha=null, editingKey=null;
+
+ // 資料結構（schemaVersion 2）：
+ // { schemaVersion: 2, updatedAt, schoolYears: ["26-27", ...], contests: [ {schoolYear, year, month, ...} ] }
+ let contestsData = { schemaVersion: 2, updatedAt: null, schoolYears: [], contests: [] };
+
+ /* ============================================================
+    Cookie + localStorage 雙寫（兼容 file:// 與 https://）
+ ============================================================ */
+ const COOKIE_MAX_AGE = 8 * 60 * 60;
+ function setCookie(name, value, maxAgeSec = COOKIE_MAX_AGE) {
+   const parts = [
+     `${encodeURIComponent(name)}=${encodeURIComponent(value)}`,
+     'path=/', 'SameSite=Lax'
+   ];
+   if (maxAgeSec) parts.push(`max-age=${maxAgeSec}`);
+   if (location.protocol === 'https:') parts.push('Secure');
+   document.cookie = parts.join('; ');
+ }
+ function getCookie(name) {
+   const key = encodeURIComponent(name) + '=';
+   return document.cookie.split('; ').reduce((acc, c) =>
+     c.indexOf(key) === 0 ? decodeURIComponent(c.slice(key.length)) : acc, '');
+ }
+ function delCookie(name) {
+   document.cookie = `${encodeURIComponent(name)}=; path=/; max-age=0; SameSite=Lax`;
+ }
+ function storeSet(key, val) {
+   try { localStorage.setItem(key, val); } catch {}
+   try { setCookie(key, val); } catch {}
+ }
+ function storeGet(key) {
+   let v = '';
+   try { v = localStorage.getItem(key) || ''; } catch {}
+   if (!v) { try { v = getCookie(key); } catch {} }
+   return v;
+ }
+ function storeDel(key) {
+   try { localStorage.removeItem(key); } catch {}
+   try { delCookie(key); } catch {}
+ }
+
+ /* ============================================================
+    背景：與首頁一致的內凹三角網 + 隨機閃爍 + 每 10 秒緩慢掃光
+ ============================================================ */
+ const canvas=$('#mesh'), ctx=canvas.getContext('2d',{alpha:true});
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const spacing=62;
+ const rand=(a,b)=>a+Math.random()*(b-a);
+ let w=0,h=0,dpr=1,points=[],edges=[],glows=[],rafId=0,lastFrame=0;
+ const SWEEP_PERIOD=10000;
+ const SWEEP_DURATION=6500;
+
+ function warpPoint(x,y){
+   const cx=w/2,cy=h/2;
+   const dx=x-cx,dy=y-cy;
+   const nx=dx/Math.max(cx,1),ny=dy/Math.max(cy,1);
+   const r2=nx*nx+ny*ny;
+   const strength=0.052;
+   const f=1-strength*r2;
+   return {x:cx+dx*f,y:cy+dy*f};
+ }
+ function buildMesh(){
+   const cols=Math.ceil(w/spacing)+3;
+   const rows=Math.ceil(h/spacing)+3;
+   points=[];edges=[];glows=[];
+   for(let row=-1;row<rows;row++){
+     points[row+1]=[];
+     for(let col=-1;col<cols;col++){
+       const baseX=col*spacing+((row&1)?spacing/2:0);
+       const baseY=row*spacing*0.866;
+       const jx=rand(-3.5,3.5), jy=rand(-3.5,3.5);
+       const p=warpPoint(baseX+jx,baseY+jy);
+       points[row+1][col+1]={x:p.x,y:p.y};
+     }
+   }
+   for(let r=0;r<points.length-1;r++){
+     for(let c=0;c<points[r].length-1;c++){
+       const a=points[r][c],b=points[r][c+1],d=points[r+1][c],e=points[r+1][c+1];
+       if(!a||!b||!d||!e)continue;
+       pushEdge(a,b);pushEdge(a,d);pushEdge(b,d);pushEdge(b,e);pushEdge(d,e);
+     }
+   }
+   const glowCount=Math.min(260,Math.max(30,Math.round((w*h)/16000)));
+   for(let i=0;i<glowCount;i++){
+     const period=rand(3600,12000);
+     glows.push({
+       edge:edges[Math.floor(Math.random()*edges.length)],
+       start:rand(0,period),
+       period,
+       duration:period*rand(0.30,0.52),
+       strength:rand(0.40,0.92)
+     });
+   }
+ }
+ function pushEdge(a,b){edges.push({a,b,mx:(a.x+b.x)*0.5,my:(a.y+b.y)*0.5})}
+ function drawEdgeGlow(edge,alpha){
+   ctx.beginPath();
+   ctx.moveTo(edge.a.x,edge.a.y);
+   ctx.lineTo(edge.b.x,edge.b.y);
+   ctx.strokeStyle=`rgba(126,202,255,${Math.min(0.95,alpha)})`;
+   ctx.lineWidth=1+alpha*1.6;
+   ctx.shadowColor=`rgba(58,148,255,${Math.min(1,alpha*0.9)})`;
+   ctx.shadowBlur=9+alpha*15;
+   ctx.stroke();
+ }
+ function drawSweep(time){
+   const t=time%SWEEP_PERIOD;
+   if(t>SWEEP_DURATION)return;
+   const p=t/SWEEP_DURATION;
+   const envelope=Math.sin(p*Math.PI);
+   if(envelope<0.03)return;
+   const sweepX=(-0.18+p*1.36)*w;
+   const sigma=Math.max(75,w*0.085);
+   const inv=1/(2*sigma*sigma);
+   const reach=sigma*3;
+   ctx.save();
+   ctx.lineCap='round';
+   for(const edge of edges){
+     const dx=edge.mx-sweepX;
+     if(dx>reach||dx<-reach)continue;
+     const g=Math.exp(-dx*dx*inv)*envelope;
+     if(g<0.05)continue;
+     ctx.beginPath();
+     ctx.moveTo(edge.a.x,edge.a.y);
+     ctx.lineTo(edge.b.x,edge.b.y);
+     ctx.strokeStyle=`rgba(150,210,255,${Math.min(0.30,g*0.30)})`;
+     ctx.lineWidth=0.8+g*1.0;
+     ctx.stroke();
+   }
+   ctx.restore();
+ }
+ function drawMesh(time){
+   ctx.clearRect(0,0,w,h);
+   ctx.lineWidth=0.72;
+   ctx.strokeStyle='rgba(105,151,207,0.105)';
+   ctx.beginPath();
+   for(const edge of edges){
+     ctx.moveTo(edge.a.x,edge.a.y);
+     ctx.lineTo(edge.b.x,edge.b.y);
+   }
+   ctx.stroke();
+   if(reduced)return;
+   drawSweep(time);
+   ctx.save();
+   for(const g of glows){
+     const t=(time+g.start)%g.period;
+     if(t>g.duration)continue;
+     const p=t/g.duration;
+     const alpha=Math.pow(Math.sin(p*Math.PI),1.25)*g.strength;
+     if(alpha<0.04)continue;
+     drawEdgeGlow(g.edge,alpha);
+   }
+   ctx.restore();
+ }
+ function resizeCanvas(){
+   w=innerWidth;h=innerHeight;
+   dpr=Math.min(devicePixelRatio||1,1.6);
+   canvas.width=Math.round(w*dpr);
+   canvas.height=Math.round(h*dpr);
+   canvas.style.width=w+'px';
+   canvas.style.height=h+'px';
+   ctx.setTransform(dpr,0,0,dpr,0,0);
+   buildMesh();
+   drawMesh(performance.now());
+ }
+ function animate(time){
+   if(time-lastFrame>=33){drawMesh(time);lastFrame=time}
+   rafId=requestAnimationFrame(animate);
+ }
+ resizeCanvas();
+ if(!reduced)rafId=requestAnimationFrame(animate);
+ let resizeTimer=0;
+ addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(resizeCanvas,100)},{passive:true});
+
+ /* ============================================================
+    工具函數
+ ============================================================ */
+ function setStatus(id,msg,good=false){$(id).style.color=good?'#9decc8':'#ffbd9d';$(id).textContent=msg}
+ function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+ function utf8ToB64(str){return btoa(unescape(encodeURIComponent(str)))}
+ function b64ToUtf8(b64){return decodeURIComponent(escape(atob(b64.replace(/\n/g,''))))}
+
+ async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+ const b64=b=>btoa(String.fromCharCode(...new Uint8Array(b)));
+
+ async function encryptAnswer(answer){
+   const raw=crypto.getRandomValues(new Uint8Array(32)),iv=crypto.getRandomValues(new Uint8Array(12));
+   const key=await crypto.subtle.importKey('raw',raw,{name:'AES-GCM'},false,['encrypt']);
+   const cipher=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(answer));
+   const obfuscated=[...raw].map((v,i)=>v^((i*31+0x5a)&255));
+   return {encryptedAnswer:b64(cipher),iv:b64(iv),keyObfuscated:b64(new Uint8Array(obfuscated)),keySalt:'static-xor-v1'};
+ }
+
+ // 依「月份在 9 月以上」判斷學年，例如 2026/11 → 26-27；2026/3 → 25-26
+ function inferSchoolYear(year, month){
+   const m=Number(month);
+   const y1 = m>=9 ? year : year-1;
+   const y2 = y1+1;
+   return `${String(y1).slice(-2)}-${String(y2).slice(-2)}`;
+ }
+
+ function keyOf(c){
+   return `${c.schoolYear||'_'}-${c.year}-${String(c.month).padStart(2,'0')}`;
+ }
+
+ /* ============================================================
+    GitHub API
+ ============================================================ */
+ async function api(path,opts={}){
+   const r=await fetch(`https://api.github.com${path}`,{
+     ...opts,
+     headers:{
+       'Accept':'application/vnd.github+json',
+       'Authorization':`Bearer ${token}`,
+       'X-GitHub-Api-Version':'2022-11-28',
+       ...(opts.headers||{})
+     }
+   });
+   let data={};
+   try{data=await r.json()}catch{}
+   if(!r.ok)throw new Error(data.message||`GitHub API error ${r.status}`);
+   return data;
+ }
+
+ function repoPath(rel){
+   return `/repos/${repo.split('/').map(encodeURIComponent).join('/')}/contents/${rel.replace(/^\/+/,'').replace(/^\.\//,'')}`;
+ }
+
+ // 讀取單一檔案（不存在回 null）
+ async function readFile(rel){
+   try{
+     const f=await api(repoPath(rel));
+     return { sha:f.sha, text:b64ToUtf8(f.content) };
+   }catch(e){
+     if(String(e.message).includes('Not Found'))return null;
+     throw e;
+   }
+ }
+
+ // 寫入單一檔案（自動偵測既有 sha 以更新）
+ async function writeFile(rel, content, message){
+   const cleanPath = rel.replace(/^\/+/,'').replace(/^\.\//,'');
+   const url = repoPath(cleanPath);
+   let sha = null;
+   try{
+     const existing = await api(url);
+     sha = existing.sha;
+   }catch(e){
+     if(!String(e.message).includes('Not Found'))throw e;
+   }
+   const encoded = utf8ToB64(typeof content==='string'?content:JSON.stringify(content,null,2));
+   const body = {
+     message: message || `Update ${cleanPath}`,
+     content: encoded,
+     branch
+   };
+   if(sha) body.sha = sha;
+   const result = await api(url,{
+     method:'PUT',
+     headers:{'Content-Type':'application/json'},
+     body:JSON.stringify(body)
+   });
+   return result;
+ }
+
+ /* ============================================================
+    賽事索引（data/contests.json）
+ ============================================================ */
+ function ensureCurrentSchoolYear(){
+   const n=new Date();
+   const sy=inferSchoolYear(n.getFullYear(), n.getMonth()+1);
+   if(!contestsData.schoolYears.includes(sy)){
+     contestsData.schoolYears.push(sy);
+     contestsData.schoolYears.sort();
+   }
+ }
+
+ function normalizeIndex(raw){
+   // 兼容舊版 schema v1（沒有 schoolYears，levels 是完整資料）
+   if(!raw || typeof raw!=='object')return { schemaVersion:2, updatedAt:null, schoolYears:[], contests:[] };
+   if(raw.schemaVersion===2 && Array.isArray(raw.schoolYears))return raw;
+   const out = { schemaVersion:2, updatedAt:raw.updatedAt||null, schoolYears:[], contests:[] };
+   for(const c of (raw.contests||[])){
+     const sy = inferSchoolYear(Number(c.year), Number(c.month));
+     if(!out.schoolYears.includes(sy)) out.schoolYears.push(sy);
+     out.contests.push({
+       schoolYear: sy,
+       year: c.year, month: c.month, monthName: c.monthName,
+       theme: c.theme, endAt: c.endAt, googleFormUrl: c.googleFormUrl,
+       published: c.published !== false,
+       basePath: `${sy}/${monthShortNames[Number(c.month)-1]}`,
+       // 只保留 index 需要的欄位（加密資料仍留在原 JSON 裡，但因為是舊版就一併丟掉）
+       levels: (c.levels||[]).map(l=>({
+         ciphertext: l.ciphertext||'',
+         hint: l.hint||'',
+         mediaUrl: l.mediaUrl||'',
+         cipherHash: l.cipherHash||''
+       }))
+     });
+   }
+   out.schoolYears.sort();
+   return out;
+ }
+
+ async function loadRepoData(){
+   const f = await readFile('data/contests.json');
+   if(f){
+     fileSha = f.sha;
+     try{
+       contestsData = normalizeIndex(JSON.parse(f.text));
+     }catch{
+       contestsData = { schemaVersion:2, updatedAt:null, schoolYears:[], contests:[] };
+     }
+   }else{
+     fileSha = null;
+     contestsData = { schemaVersion:2, updatedAt:null, schoolYears:[], contests:[] };
+   }
+   ensureCurrentSchoolYear();
+   renderSchoolYearOptions();
+   renderContestList();
+   updateCurrent();
+ }
+
+ async function writeIndex(){
+   contestsData.updatedAt = new Date().toISOString();
+   const url = repoPath('data/contests.json');
+   const content = utf8ToB64(JSON.stringify(contestsData,null,2));
+   const body = {
+     message:'Update CLS Cipher Cup contest index',
+     content,
+     branch
+   };
+   if(fileSha) body.sha = fileSha;
+   const result = await api(url,{
+     method:'PUT',
+     headers:{'Content-Type':'application/json'},
+     body:JSON.stringify(body)
+   });
+   fileSha = result.content?.sha || fileSha;
+ }
+
+ /* ============================================================
+    學年下拉選單
+ ============================================================ */
+ function renderSchoolYearOptions(preferValue){
+   const sel = $('#schoolYear');
+   const cur = preferValue || sel.value;
+   sel.innerHTML = contestsData.schoolYears
+     .map(sy=>`<option value="${escapeHtml(sy)}">${escapeHtml(sy)}</option>`)
+     .join('');
+   if(cur && contestsData.schoolYears.includes(cur)){
+     sel.value = cur;
+   }else if(contestsData.schoolYears.length){
+     sel.value = contestsData.schoolYears[contestsData.schoolYears.length-1];
+   }
+   updatePathHint();
+ }
+
+ function updatePathHint(){
+   const sy = $('#schoolYear').value || '{學年}';
+   const m  = Number($('#month').value) || 1;
+   const ms = monthShortNames[m-1] || '{月份}';
+   $('#pathHint').textContent = `資料將儲存於 ./${sy}/${ms}/lv1.json … lv3.json`;
+ }
+
+ async function addSchoolYear(){
+   const input = prompt('請輸入新的學年標籤（格式 YY-YY，例如 26-27）：', '');
+   if(input===null)return;
+   const label = input.trim();
+   if(!/^\d{2}-\d{2}$/.test(label)){
+     setStatus('#editorStatus','格式錯誤，請使用 YY-YY 格式，例如 26-27。');
+     return;
+   }
+   if(contestsData.schoolYears.includes(label)){
+     setStatus('#editorStatus',`學年 ${label} 已存在。`);
+     return;
+   }
+   contestsData.schoolYears.push(label);
+   contestsData.schoolYears.sort();
+   try{
+     // 建立學年資料夾（放一個 .gitkeep 佔位）
+     await writeFile(`${label}/.gitkeep`, `# School year ${label}\n`, `Create school year folder ${label}`);
+     await writeIndex();
+     renderSchoolYearOptions(label);
+     setStatus('#editorStatus',`已新增學年 ${label}，並建立 ./${label}/ 資料夾。`,true);
+   }catch(e){
+     contestsData.schoolYears = contestsData.schoolYears.filter(sy=>sy!==label);
+     setStatus('#editorStatus',`新增失敗：${e.message}`);
+   }
+ }
+
+ async function removeSchoolYear(){
+   const sel = $('#schoolYear');
+   const label = sel.value;
+   if(!label)return;
+   const affected = contestsData.contests.filter(c=>c.schoolYear===label);
+   const msg = affected.length
+     ? `學年 ${label} 下有 ${affected.length} 個賽事。刪除後這些賽事也會從索引移除（GitHub 上的資料檔案不會自動刪除）。\n\n確定要刪除嗎？`
+     : `確定要刪除學年 ${label}？`;
+   if(!confirm(msg))return;
+
+   const backupYears = [...contestsData.schoolYears];
+   const backupContests = [...contestsData.contests];
+   contestsData.schoolYears = contestsData.schoolYears.filter(sy=>sy!==label);
+   contestsData.contests = contestsData.contests.filter(c=>c.schoolYear!==label);
+
+   try{
+     await writeIndex();
+     renderSchoolYearOptions();
+     renderContestList();
+     setStatus('#editorStatus',`已刪除學年 ${label}（GitHub 上的檔案未刪除）。`,true);
+   }catch(e){
+     contestsData.schoolYears = backupYears;
+     contestsData.contests = backupContests;
+     setStatus('#editorStatus',`刪除失敗：${e.message}`);
+   }
+ }
+
+ /* ============================================================
+    關卡編輯
+ ============================================================ */
+ function renderLevels(levels=[{},{},{}]){
+  $('#levels').innerHTML=levels.map((l,i)=>`<div class="level"><h3>密文 ${['一','二','三'][i]}</h3><div class="field"><label>明文答案（加密後保存）</label><textarea data-field="plaintext" data-level="${i}" placeholder="輸入正確答案">${escapeHtml(l.plaintext||'')}</textarea></div><div class="field"><label>顯示密文</label><textarea data-field="ciphertext" data-level="${i}" placeholder="參加者需要提交的密文">${escapeHtml(l.ciphertext||'')}</textarea></div><div class="field"><label>提示</label><textarea data-field="hint" data-level="${i}" placeholder="可留空">${escapeHtml(l.hint||'')}</textarea></div><div class="field"><label>圖片／影片／音訊網址（可留空）</label><input data-field="mediaUrl" data-level="${i}" type="url" placeholder="https://…" value="${escapeHtml(l.mediaUrl||'')}"></div></div>`).join('');
+ }
+ function getLevels(){return [0,1,2].map(i=>{const o={};document.querySelectorAll(`[data-level="${i}"]`).forEach(el=>o[el.dataset.field]=el.value.trim());return o})}
+
+ /* ============================================================
+    登入流程
+ ============================================================ */
+ async function verifyAndEnter(loginHint){
+   const user=await api('/user');
+   const [owner,name]=repo.split('/');
+   const info=await api(`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(name)}`);
+   if(!info.permissions?.push)throw new Error('此 Token 沒有該儲存庫的寫入權限。請確認 Fine-grained PAT 的 Contents: Read and write。');
+   branch=info.default_branch||'main';
+   $('#repoLabel').textContent=repo;
+   $('#welcomeSub').textContent=`已驗證 GitHub 帳戶：${user.login}。`;
+   $('#loginPanel').classList.add('hidden');
+   $('#dashboard').classList.remove('hidden');
+   await loadRepoData();
+   setStatus('#globalStatus',loginHint,true);
+ }
+
+ async function login(){
+  token=$('#ghToken').value.trim();repo=$('#ghRepo').value.trim();
+  if(!token||!/^[^/\s]+\/[^/\s]+$/.test(repo)){setStatus('#loginStatus','請輸入 Token 及正確的 owner/repo。');return}
+  $('#loginBtn').disabled=true;setStatus('#loginStatus','正在驗證 GitHub 帳戶及儲存庫權限…');
+  try{
+   await verifyAndEnter('已登入。Token 儲存於 cookie （8 小時有效）；登出後會清除。');
+   storeSet('ccc_admin_session','1');
+   storeSet('ccc_admin_repo',repo);
+   storeSet('ccc_admin_token',token);
+  }catch(e){
+   token='';
+   clearAdminSession();
+   setStatus('#loginStatus',`登入失敗：${e.message}`);
+  }finally{$('#loginBtn').disabled=false}
+ }
+
+ async function autoLogin(){
+  const savedToken=storeGet('ccc_admin_token');
+  const savedRepo=storeGet('ccc_admin_repo');
+  if(!savedToken||!savedRepo)return;
+
+  token=savedToken;repo=savedRepo;
+  $('#ghToken').value=savedToken;
+  $('#ghRepo').value=savedRepo;
+  $('#loginBtn').disabled=true;
+  setStatus('#loginStatus','偵測到先前的登入，正在自動驗證…');
+
+  try{
+    await verifyAndEnter('已自動登入（沿用先前的 session）。');
+    setStatus('#loginStatus','');
+  }catch(e){
+    token='';repo='';
+    clearAdminSession();
+    $('#ghToken').value='';$('#ghRepo').value='';
+    setStatus('#loginStatus',`自動登入失敗：${e.message}。請重新輸入 Token。`);
+  }finally{
+    $('#loginBtn').disabled=false;
+  }
+ }
+
+ function clearAdminSession(){
+  storeDel('ccc_admin_session');
+  storeDel('ccc_admin_repo');
+  storeDel('ccc_admin_token');
+ }
+
+ /* ============================================================
+    賽事列表
+ ============================================================ */
+ function renderContestList(){
+  const list=$('#contestList');
+  const sorted=[...contestsData.contests].sort((a,b)=>
+    (b.year-a.year) || (b.month-a.month)
+  );
+  list.innerHTML = sorted.length
+    ? sorted.map(c=>`
+      <div class="contest-item">
+        <div>
+          <strong>${escapeHtml(c.year)} / ${escapeHtml(c.monthName||monthNames[c.month-1])} · ${escapeHtml(c.theme||'未命名主題')}</strong>
+          <span class="badge">${c.published===false?'已封存':'已發布'} · 學年 ${escapeHtml(c.schoolYear||'?')} · ${c.levels?.length||0} 階段 · <code>./${escapeHtml(c.basePath||'')}/</code></span>
+        </div>
+        <div class="actions">
+          <button class="btn secondary" data-edit="${escapeHtml(keyOf(c))}">編輯</button>
+          <button class="btn danger" data-archive="${escapeHtml(keyOf(c))}">${c.published===false?'重新發布':'封存'}</button>
+        </div>
+      </div>`).join('')
+    : '<p class="muted">目前尚未有賽事。請在下方建立第一個月份。</p>';
+  list.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>editContest(b.dataset.edit)));
+  list.querySelectorAll('[data-archive]').forEach(b=>b.addEventListener('click',()=>toggleArchive(b.dataset.archive)));
+ }
+
+ function updateCurrent(){
+   const n=new Date();
+   $('#currentMonth').textContent=`${monthNames[n.getMonth()]} ${n.getFullYear()}`;
+   const end=new Date(n.getFullYear(),n.getMonth()+1,1);
+   $('#countdown').textContent=`距離本月結束約 ${Math.max(0,Math.ceil((end-n)/86400000))} 日`;
+   $('#year').value=n.getFullYear();
+   $('#month').value=String(n.getMonth()+1);
+   const sy = inferSchoolYear(n.getFullYear(), n.getMonth()+1);
+   if(contestsData.schoolYears.includes(sy)){
+     $('#schoolYear').value = sy;
+   }
+   updatePathHint();
+ }
+
+ /* ============================================================
+    編輯 / 新增 / 儲存
+ ============================================================ */
+ function editContest(k){
+   const c=contestsData.contests.find(x=>keyOf(x)===k);
+   if(!c)return;
+   editingKey=k;
+   $('#editorTitle').textContent=`編輯賽事：${c.year} / ${c.monthName}`;
+   $('#year').value=c.year;
+   $('#month').value=c.month;
+   if(c.schoolYear && contestsData.schoolYears.includes(c.schoolYear)){
+     $('#schoolYear').value = c.schoolYear;
+   }
+   $('#theme').value=c.theme||'';
+   $('#endAt').value=c.endAt||'';
+   $('#googleFormUrl').value=c.googleFormUrl||'';
+   // 只預填 hint / mediaUrl / ciphertext，明文答案需重新輸入
+   const levels = (c.levels||[{},{},{}]).map(l=>({
+     plaintext:'',
+     ciphertext:l.ciphertext||'',
+     hint:l.hint||'',
+     mediaUrl:l.mediaUrl||''
+   }));
+   renderLevels(levels);
+   updatePathHint();
+   $('#editorPanel').scrollIntoView({behavior:'smooth'});
+   setStatus('#editorStatus','已載入現有資料。為保障安全，明文答案需重新輸入，重新發布會重新加密。',true);
+ }
+
+ function clearEditor(){
+   editingKey=null;
+   $('#editorTitle').textContent='提交新的賽事題目';
+   $('#theme').value='';
+   $('#endAt').value='';
+   $('#googleFormUrl').value='';
+   renderLevels();
+   updateCurrent();
+   setStatus('#editorStatus','');
+ }
+
+ async function saveContest(){
+   const year=Number($('#year').value);
+   const month=Number($('#month').value);
+   const schoolYear=$('#schoolYear').value;
+   const theme=$('#theme').value.trim();
+   const levels=getLevels();
+
+   if(!year||!month||!theme){setStatus('#editorStatus','請填寫年份、月份及主題。');return}
+   if(!schoolYear){setStatus('#editorStatus','請選擇學年（可先按 ＋ 新增）。');return}
+   if(levels.some(l=>!l.plaintext||!l.ciphertext)){
+     setStatus('#editorStatus','三個階段均須填寫明文答案及顯示密文。');
+     return;
+   }
+
+   const monthShort = monthShortNames[month-1];
+   const basePath = `${schoolYear}/${monthShort}`;
+
+   const previous = contestsData.contests.find(c =>
+     c.schoolYear === schoolYear && c.year === year && c.month === month
+   );
+   // 防止同一年月在不編輯的情況下建立重複（跨學年）
+   if(!editingKey && previous){
+     setStatus('#editorStatus','該學年此月份已存在賽事，請按「編輯」修改。');
+     return;
+   }
+
+   $('#saveBtn').disabled=true;
+   setStatus('#editorStatus','正在加密答案、寫入 GitHub…');
+
+   try{
+     // 1. 加密每關
+     const cooked=[];
+     for(const l of levels){
+       const crypt = await encryptAnswer(l.plaintext);
+       cooked.push({
+         ciphertext: l.ciphertext,
+         hint: l.hint||'',
+         mediaUrl: l.mediaUrl||'',
+         cipherHash: await sha256(l.plaintext),
+         ...crypt
+       });
+     }
+
+     // 2. 寫入 ./{學年}/{月份}/lv1.json … lv3.json
+     for(let i=0;i<3;i++){
+       await writeFile(
+         `${basePath}/lv${i+1}.json`,
+         cooked[i],
+         `Update ${basePath}/lv${i+1}.json`
+       );
+     }
+
+     // 3. 更新索引
+     const idxLevels = cooked.map(l=>({
+       ciphertext: l.ciphertext,
+       hint: l.hint,
+       mediaUrl: l.mediaUrl,
+       cipherHash: l.cipherHash
+     }));
+
+     const idxEntry = {
+       schoolYear,
+       year,
+       month,
+       monthName: monthNames[month-1],
+       theme,
+       endAt: $('#endAt').value.trim() || new Date(year, month-1, 1, 23, 59, 0).toISOString(),
+       googleFormUrl: $('#googleFormUrl').value.trim(),
+       published: true,
+       basePath,
+       levels: idxLevels
+     };
+
+     // 移除舊記錄（同一年月，任何學年）
+     contestsData.contests = contestsData.contests.filter(c =>
+       !(c.year===year && c.month===month)
+     );
+     contestsData.contests.push(idxEntry);
+
+     // 確保 schoolYear 在清單中
+     if(!contestsData.schoolYears.includes(schoolYear)){
+       contestsData.schoolYears.push(schoolYear);
+       contestsData.schoolYears.sort();
+     }
+
+     await writeIndex();
+     renderContestList();
+     renderSchoolYearOptions(schoolYear);
+     clearEditor();
+     setStatus('#globalStatus',`賽事資料已提交（${basePath}/lv1..3.json）。等待 Pages 部署完成。`,true);
+   }catch(e){
+     setStatus('#editorStatus',`發布失敗：${e.message}`);
+   }finally{
+     $('#saveBtn').disabled=false;
+   }
+ }
+
+ async function toggleArchive(k){
+   const c=contestsData.contests.find(x=>keyOf(x)===k);
+   if(!c)return;
+   const before = c.published;
+   c.published = c.published===false ? true : false;
+   try{
+     await writeIndex();
+     renderContestList();
+     setStatus('#globalStatus',`${c.year} / ${c.monthName} 狀態已更新。`,true);
+   }catch(e){
+     c.published = before;
+     setStatus('#globalStatus',`更新失敗：${e.message}`);
+   }
+ }
+
+ /* ============================================================
+    事件綁定
+ ============================================================ */
+ $('#loginBtn').addEventListener('click',login);
+ $('#ghToken').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+ $('#saveBtn').addEventListener('click',saveContest);
+ $('#newBtn').addEventListener('click',clearEditor);
+ $('#addYearBtn').addEventListener('click',addSchoolYear);
+ $('#removeYearBtn').addEventListener('click',removeSchoolYear);
+ $('#month').addEventListener('change',updatePathHint);
+ $('#schoolYear').addEventListener('change',updatePathHint);
+ $('#logoutBtn').addEventListener('click',()=>{
+   token='';repo='';
+   clearAdminSession();
+   location.href='./index.html';
+ });
+
+ renderLevels();
+ updateCurrent();
+ autoLogin();
+})();
+</script>
+</body></html>
