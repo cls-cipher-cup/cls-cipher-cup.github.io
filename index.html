@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#05070d" />
   <meta name="robots" content="noindex, nofollow, noarchive" />
-  <link rel="icon" type="image/png" href="/img/icon/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/img/icon/favicon.svg" />
-  <link rel="shortcut icon" href="/img/icon/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/img/icon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="./img/icon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="./img/icon/favicon.svg" />
+  <link rel="shortcut icon" href="./img/icon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./img/icon/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="Cipher Cup" />
-  <link rel="manifest" href="/img/icon/site.webmanifest" />
+  <link rel="manifest" href="./img/icon/site.webmanifest" />
   <title>CLS Cipher Cup</title>
   <style>
     :root {
@@ -30,28 +30,19 @@
       scroll-behavior: auto;
       scroll-snap-type: none;
     }
-    html,
-    body {
-      scrollbar-width: none;      /* Firefox */
-      -ms-overflow-style: none;   /* 舊版 Edge / IE */
+    html, body {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
-
     html::-webkit-scrollbar,
     body::-webkit-scrollbar,
     *::-webkit-scrollbar {
-      display: none;              /* Chrome / Edge / Safari */
+      display: none;
       width: 0;
       height: 0;
     }
-    html.home-snap {
-      scroll-snap-type: y mandatory;
-    }
-
-    html.home-snap #home {
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-    }
-
+    html.home-snap { scroll-snap-type: y mandatory; }
+    html.home-snap #home,
     html.home-snap #overview {
       scroll-snap-align: start;
       scroll-snap-stop: always;
@@ -68,6 +59,8 @@
     button, input { font: inherit; }
     button { color: inherit; }
 
+    .hidden { display: none !important; }
+
     .page {
       position: relative;
       min-height: 100svh;
@@ -76,7 +69,7 @@
       overflow: clip;
     }
 
-    /* Home */
+    /* ---------- Home ---------- */
     #home {
       display: grid;
       place-items: center;
@@ -111,18 +104,128 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: clamp(28px, 5vh, 46px);
       padding-bottom: 3vh;
     }
     .brand-logo {
       display: block;
       width: min(440px, 82vw);
-      max-height: 30svh;
+      max-height: 26svh;
       object-fit: contain;
+      margin-bottom: clamp(16px, 3.2vh, 28px);
       filter: drop-shadow(0 8px 32px rgba(37, 113, 208, .11));
       user-select: none;
       -webkit-user-drag: none;
     }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 0 12px;
+      color: #8fb4e2;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .hero-meta .meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(140, 190, 245, .55);
+      box-shadow: 0 0 8px rgba(110, 180, 255, .55);
+      flex: 0 0 auto;
+    }
+    .hero-meta .meta-month { color: #cfe2fb; }
+
+    .cipher-title {
+      margin: 0 0 clamp(14px, 2.6vh, 22px);
+      font-size: clamp(19px, 2.7vw, 26px);
+      font-weight: 600;
+      letter-spacing: .16em;
+      color: #dceaff;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    /* ---------- Clue panel（關卡密文展示） ---------- */
+    .clue-panel {
+      width: min(540px, 100%);
+      margin: 0 0 clamp(16px, 2.8vh, 24px);
+      padding: clamp(18px, 3vw, 24px);
+      border: 1px solid rgba(160, 196, 238, .18);
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(20, 35, 56, .48), rgba(9, 14, 24, .6)),
+        rgba(10, 15, 25, .68);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .04),
+        0 14px 42px rgba(0, 0, 0, .18);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      animation: clue-in .35s ease both;
+    }
+    @keyframes clue-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .clue-label {
+      margin: 0 0 12px;
+      font-size: 11px;
+      letter-spacing: .22em;
+      color: #78b7f7;
+      text-transform: uppercase;
+      font-weight: 650;
+    }
+    .clue-cipher {
+      margin: 0 0 12px;
+      padding: 14px 16px;
+      background: rgba(3, 7, 14, .6);
+      border: 1px solid rgba(160, 196, 238, .1);
+      border-radius: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 15px;
+      letter-spacing: .08em;
+      color: #dceaff;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.6;
+      max-height: 30vh;
+      overflow-y: auto;
+    }
+    .clue-hint {
+      margin: 0 0 12px;
+      color: #a4b1c5;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .clue-media { margin-top: 6px; }
+    .clue-media img,
+    .clue-media video {
+      display: block;
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, .3);
+    }
+    .clue-media audio { width: 100%; }
+    .clue-media-link {
+      display: inline-block;
+      padding: 9px 14px;
+      border: 1px solid rgba(160, 196, 238, .3);
+      border-radius: 10px;
+      color: #cfe2fb;
+      text-decoration: none;
+      font-size: 13px;
+      transition: background .2s ease;
+    }
+    .clue-media-link:hover { background: rgba(122, 186, 255, .1); }
+
+    /* ---------- 提交表單 ---------- */
     .cipher-form {
       width: min(510px, 100%);
       display: flex;
@@ -132,12 +235,12 @@
       border: 1px solid rgba(235, 244, 255, .28);
       border-radius: 999px;
       background:
-        linear-gradient(150deg, rgba(255,255,255,.16), rgba(255,255,255,.055) 46%, rgba(190,215,255,.075)),
+        linear-gradient(150deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .055) 46%, rgba(190, 215, 255, .075)),
         rgba(232, 241, 255, .075);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.22),
-        inset 0 -1px 0 rgba(255,255,255,.035),
-        0 12px 42px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255, 255, 255, .22),
+        inset 0 -1px 0 rgba(255, 255, 255, .035),
+        0 12px 42px rgba(0, 0, 0, .22),
         0 0 36px rgba(33, 100, 180, .055);
       -webkit-backdrop-filter: blur(28px) saturate(145%);
       backdrop-filter: blur(28px) saturate(145%);
@@ -146,9 +249,9 @@
     .cipher-form:focus-within {
       border-color: rgba(125, 190, 255, .56);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.24),
+        inset 0 1px 0 rgba(255, 255, 255, .24),
         0 0 0 3px rgba(75, 151, 232, .08),
-        0 12px 44px rgba(0,0,0,.24),
+        0 12px 44px rgba(0, 0, 0, .24),
         0 0 30px rgba(43, 127, 221, .12);
     }
     .cipher-input {
@@ -169,32 +272,84 @@
       height: 46px;
       display: grid;
       place-items: center;
-      border: 1px solid rgba(255,255,255,.32);
+      border: 1px solid rgba(255, 255, 255, .32);
       border-radius: 50%;
       background:
-        linear-gradient(145deg, rgba(255,255,255,.28), rgba(255,255,255,.1)),
+        linear-gradient(145deg, rgba(255, 255, 255, .28), rgba(255, 255, 255, .1)),
         rgba(215, 231, 255, .14);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 3px 12px rgba(0,0,0,.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 3px 12px rgba(0, 0, 0, .12);
       -webkit-backdrop-filter: blur(34px) saturate(165%);
       backdrop-filter: blur(34px) saturate(165%);
       cursor: pointer;
-      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
     }
     .submit-button:hover {
       transform: translateX(2px);
       background: rgba(205, 229, 255, .25);
-      border-color: rgba(255,255,255,.48);
+      border-color: rgba(255, 255, 255, .48);
     }
     .submit-button:active { transform: scale(.96); }
+    .submit-button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
     .submit-button svg { width: 21px; height: 21px; }
+
     .submit-status {
       min-height: 20px;
-      margin: -18px 0 0;
+      margin: 12px 0 0;
       color: #b8c8df;
       font-size: 13px;
       text-align: center;
+      transition: color .2s ease;
+    }
+    .submit-status[data-kind="ok"] { color: #8df0c2; }
+    .submit-status[data-kind="warn"] { color: #ffbd9d; }
+
+    /* ---------- 完成卡片 ---------- */
+    .success-panel {
+      width: min(510px, 100%);
+      padding: clamp(22px, 4vw, 30px);
+      border: 1px solid rgba(141, 240, 194, .25);
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(20, 45, 36, .5), rgba(9, 24, 18, .65)),
+        rgba(10, 22, 17, .7);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .04),
+        0 14px 44px rgba(0, 0, 0, .22);
+      text-align: center;
+      animation: clue-in .35s ease both;
+    }
+    .success-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #a8f4d1;
+      font-weight: 650;
+      letter-spacing: .02em;
+    }
+    .success-desc {
+      margin: 0 0 18px;
+      color: #a4c5b8;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .success-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2ea06e, #48b98a);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 650;
+      font-size: 14px;
+      letter-spacing: .02em;
+      transition: filter .2s, transform .2s;
+      box-shadow: 0 6px 20px rgba(46, 160, 110, .25);
+    }
+    .success-btn:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
     }
 
+    /* ---------- 捲動提示 ---------- */
     .scroll-cue {
       position: absolute;
       z-index: 2;
@@ -221,7 +376,7 @@
       50% { transform: translateY(5px); }
     }
 
-    /* Floating navigation only appears after leaving the hero */
+    /* ---------- 浮動導航 ---------- */
     .site-nav {
       position: fixed;
       z-index: 20;
@@ -237,7 +392,7 @@
       border: 1px solid rgba(210, 229, 255, .13);
       border-radius: 999px;
       background: rgba(8, 12, 21, .66);
-      box-shadow: 0 12px 42px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.05);
+      box-shadow: 0 12px 42px rgba(0, 0, 0, .2), inset 0 1px 0 rgba(255, 255, 255, .05);
       -webkit-backdrop-filter: blur(24px) saturate(145%);
       backdrop-filter: blur(24px) saturate(145%);
       opacity: 0;
@@ -263,7 +418,6 @@
       background: transparent;
       cursor: pointer;
     }
-
     .nav-brand img {
       display: block;
       height: 100%;
@@ -274,7 +428,6 @@
       filter: drop-shadow(0 0 8px rgba(74, 151, 245, .12));
       transition: filter .25s ease, opacity .25s ease;
     }
-
     .nav-brand:hover img {
       filter: drop-shadow(0 0 12px rgba(105, 180, 255, .35));
       opacity: .9;
@@ -296,10 +449,12 @@
       height: 1px;
       background: #7abaff;
       content: "";
-      box-shadow: 0 0 9px rgba(122,186,255,.65);
+      box-shadow: 0 0 9px rgba(122, 186, 255, .65);
     }
+    .admin-link { display: none !important; }
+    .admin-link.show { display: inline !important; }
 
-    /* Content sections */
+    /* ---------- 內容區 ---------- */
     #overview {
       padding: clamp(100px, 12vh, 140px) var(--page-pad) 90px;
       background:
@@ -338,7 +493,7 @@
       background:
         linear-gradient(135deg, rgba(20, 35, 56, .52), rgba(9, 14, 24, .68)),
         rgba(10, 15, 25, .75);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 18px 60px rgba(0,0,0,.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035), 0 18px 60px rgba(0, 0, 0, .12);
     }
     .progress-head {
       display: flex;
@@ -383,11 +538,12 @@
       color: #65748a;
       font-size: 11px;
     }
+
+    .countdown-wrap { margin-top: 28px; }
     .countdown {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
-      margin-top: 28px;
     }
     .time-unit {
       min-width: 0;
@@ -454,6 +610,15 @@
       font-size: 14px;
       line-height: 1.8;
     }
+    #archiveList p {
+      margin: 10px 0 0;
+      padding: 14px 18px;
+      border: 1px solid rgba(159, 188, 225, .12);
+      border-radius: 12px;
+      background: rgba(10, 16, 27, .6);
+      color: #a9b8cd;
+      font-size: 14px;
+    }
     .site-footer {
       padding: 28px var(--page-pad) 36px;
       border-top: 1px solid rgba(159, 188, 225, .08);
@@ -465,12 +630,16 @@
     }
 
     @media (max-width: 620px) {
-      .hero { gap: 30px; padding-bottom: 5vh; }
-      .brand-logo { width: min(360px, 80vw); }
+      .hero { padding-bottom: 5vh; }
+      .brand-logo { width: min(340px, 78vw); margin-bottom: 16px; }
+      .hero-meta { font-size: 10px; letter-spacing: .12em; gap: 8px; margin-bottom: 10px; }
+      .cipher-title { font-size: 17px; letter-spacing: .12em; margin-bottom: 14px; }
+      .clue-panel { padding: 16px; border-radius: 14px; margin-bottom: 14px; }
+      .clue-cipher { font-size: 13px; padding: 12px; }
       .cipher-input { padding: 12px 11px; font-size: 14px; }
       .submit-button { flex-basis: 43px; width: 43px; height: 43px; }
       .site-nav { top: 9px; width: calc(100% - 18px); padding: 9px 12px; gap: 12px; }
-      .nav-brand { font-size: 12px; }
+      .nav-brand { width: 110px; }
       .nav-links { gap: 12px; }
       .nav-links a { font-size: 11px; }
       #overview { padding-top: 94px; }
@@ -481,7 +650,7 @@
       .rule-row { grid-template-columns: 38px minmax(0, 1fr); gap: 10px; }
     }
     @media (max-width: 390px) {
-      .nav-brand { max-width: 92px; white-space: normal; text-align: left; line-height: 1.25; }
+      .nav-brand { width: 88px; }
       .nav-links { gap: 9px; }
       .nav-links a { font-size: 10px; }
       .progress-panel { padding: 18px; }
@@ -500,12 +669,13 @@
 <body>
   <nav class="site-nav" id="siteNav" aria-label="主導航">
     <button class="nav-brand" id="navHome" type="button" aria-label="返回首頁">
-      <img src="img/logo/Cipher Cup Horizontal.png" alt="CLS Cipher Cup" />
+      <img src="./img/logo/Cipher Cup Horizontal.png" alt="CLS Cipher Cup" />
     </button>
     <div class="nav-links">
       <a href="#overview" data-section="overview">規則簡介</a>
       <a href="#past-puzzles" data-section="past-puzzles">歷屆題目</a>
       <a href="#about" data-section="about">關於解謎杯</a>
+      <a href="./admin.html" id="adminNav" class="admin-link">管理面板</a>
     </div>
   </nav>
 
@@ -515,7 +685,24 @@
       <div class="home-vignette" aria-hidden="true"></div>
 
       <div class="hero">
-        <img class="brand-logo" src="img/logo/Cipher Cup T.png" alt="CLS Cipher Cup" />
+        <img class="brand-logo" src="./img/logo/Cipher Cup T.png" alt="CLS Cipher Cup" />
+
+        <p class="hero-meta">
+          <span id="academicYear">2026–2027</span>
+          <span class="meta-dot" aria-hidden="true"></span>
+          <span class="meta-month" id="monthLabel">載入賽事資料中…</span>
+        </p>
+
+        <h1 class="cipher-title" id="stageLabel">密文一</h1>
+
+        <!-- 關卡密文展示（第一關不顯示） -->
+        <section class="clue-panel hidden" id="cluePanel" aria-live="polite">
+          <p class="clue-label" id="clueLabel">本關密文</p>
+          <pre class="clue-cipher" id="clueCipher"></pre>
+          <p class="clue-hint hidden" id="clueHint"></p>
+          <div class="clue-media" id="clueMedia"></div>
+        </section>
+
         <form class="cipher-form" id="cipherForm" autocomplete="off">
           <input
             class="cipher-input"
@@ -526,7 +713,6 @@
             aria-label="輸入密文"
             spellcheck="false"
             autocapitalize="off"
-            required
           />
           <button class="submit-button" type="submit" aria-label="提交密文">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -535,6 +721,13 @@
           </button>
         </form>
         <p class="submit-status" id="submitStatus" role="status" aria-live="polite"></p>
+
+        <!-- 完成卡片（lv3 通過後顯示） -->
+        <section class="success-panel hidden" id="successPanel" aria-live="polite">
+          <p class="success-title">恭喜完成本月挑戰！</p>
+          <p class="success-desc" id="successDesc">請按下方按鈕前往提交你的答案，以記錄成績。</p>
+          <a class="success-btn hidden" id="successBtn" href="#" target="_blank" rel="noopener">前往提交答案 ↗</a>
+        </section>
       </div>
 
       <button class="scroll-cue" id="scrollCue" type="button" aria-label="向下瀏覽規則簡介">
@@ -547,7 +740,7 @@
 
     <section class="page" id="overview" aria-labelledby="overviewTitle">
       <div class="content-wrap">
-        <section class="progress-panel" aria-labelledby="progressTitle">
+        <section class="progress-panel hidden" id="progressPanel" aria-labelledby="progressTitle">
           <div class="progress-head">
             <div>
               <p class="section-kicker">CURRENT MONTH</p>
@@ -564,13 +757,15 @@
             <span id="periodEnd">本月結束</span>
           </div>
 
-          <div class="countdown" aria-label="距離本月謎底公布的倒計時">
-            <div class="time-unit"><span class="time-number" id="days">00</span><span class="time-label">Days</span></div>
-            <div class="time-unit"><span class="time-number" id="hours">00</span><span class="time-label">Hours</span></div>
-            <div class="time-unit"><span class="time-number" id="minutes">00</span><span class="time-label">Minutes</span></div>
-            <div class="time-unit"><span class="time-number" id="seconds">00</span><span class="time-label">Seconds</span></div>
+          <div class="countdown-wrap hidden" id="countdownWrap">
+            <div class="countdown" aria-label="距離本月謎底公布的倒計時">
+              <div class="time-unit"><span class="time-number" id="days">00</span><span class="time-label">Days</span></div>
+              <div class="time-unit"><span class="time-number" id="hours">00</span><span class="time-label">Hours</span></div>
+              <div class="time-unit"><span class="time-number" id="minutes">00</span><span class="time-label">Minutes</span></div>
+              <div class="time-unit"><span class="time-number" id="seconds">00</span><span class="time-label">Seconds</span></div>
+            </div>
+            <p class="countdown-caption" id="countdownCaption">倒計時以香港時間計算，於本月最後一日 23:59 公布謎底。</p>
           </div>
-          <p class="countdown-caption" id="countdownCaption">倒計時以香港時間計算，暫定於本月最後一日 23:59 公布謎底。</p>
         </section>
 
         <section class="rules-heading">
@@ -600,14 +795,14 @@
             <span class="rule-number">03 / 03</span>
             <div>
               <h3>提交當月謎底</h3>
-              <p>第三組密文即為當月謎底。成功提交正確的第三組密文後，即完成當月挑戰，並按排名獲得全年積分。</p>
+              <p>成功在Google Form提交正確的三組密文後，即完成當月挑戰，並按排名獲得全年積分。</p>
             </div>
           </article>
           <article class="rule-row">
             <span class="rule-number">04 / 04</span>
             <div>
               <h3>月度獎勵與全年排名</h3>
-              <p>每月第一名可獲得證書、當月限定 3D 打印立牌及零食。每月積分會累積至全年排行榜，年度總排名頭四名均可獲得年度獎勵。</p>
+              <p>每月第一名可獲得證書、當月限定 3D 打印立牌及獎品。每月積分會累積至全年排行榜，年度總排名頭四名均可獲得年度獎勵。</p>
             </div>
           </article>
           <article class="rule-row">
@@ -626,7 +821,8 @@
         <p class="section-kicker">ARCHIVE</p>
         <h2 class="section-title" id="pastTitle">歷屆題目</h2>
         <p class="section-lead">重溫過往月份的挑戰與解謎思路。正式上線後，可在這裡加入各月份的題目、謎底公布及解題紀錄。</p>
-        <div class="empty-state">歷屆題目即將開放。<br />尚未公布謎底的題目及線索不應在此提前公開。</div>
+        <div class="empty-state" id="archiveEmpty">歷屆題目即將開放。<br />尚未公布謎底的題目及線索不應在此提前公開。</div>
+        <div id="archiveList"></div>
       </div>
     </section>
 
@@ -635,6 +831,9 @@
         <p class="section-kicker">ABOUT THE CUP</p>
         <h2 class="section-title" id="aboutTitle">關於 CLS Cipher Cup</h2>
         <p class="section-lead">CLS Cipher Cup 由 IT 學會策劃，透過每月更新的多層次解謎挑戰，結合密碼學、資訊分析與邏輯推理，鼓勵同學以不同角度探索資訊科技。</p>
+        <p class="section-lead">2026 - 2027 學年出題人：5A 游博謙</p>
+        <p class="section-lead">本學會鄭重承諾，除上述名單所列人員外，絕無任何外部人士得於試題公布前知悉其內容。同時，上述所有人員均不會參與當年度的全年排名。
+</p>
       </div>
     </section>
   </main>
@@ -645,23 +844,84 @@
     (() => {
       "use strict";
 
-      const home = document.getElementById("home");
-      const nav = document.getElementById("siteNav");
-      const html = document.documentElement;
-      const overview = document.getElementById("overview");
+      /* ============================================================
+         0. Cookie / localStorage 雙讀（用於判斷管理面板入口）
+      ============================================================ */
+      function getStoredFlag(name) {
+        let v = '';
+        try { v = localStorage.getItem(name) || ''; } catch {}
+        if (!v) {
+          try {
+            const key = encodeURIComponent(name) + '=';
+            v = document.cookie.split('; ').reduce((acc, c) =>
+              c.indexOf(key) === 0 ? decodeURIComponent(c.slice(key.length)) : acc, '');
+          } catch {}
+        }
+        return v;
+      }
 
+      /* ============================================================
+         1. 共用參照
+      ============================================================ */
+      const $ = id => document.getElementById(id);
+      const home = $("home");
+      const overview = $("overview");
+      const nav = $("siteNav");
+      const html = document.documentElement;
+
+      const navHome = $("navHome");
+      const scrollCue = $("scrollCue");
+      const sections = [...document.querySelectorAll("main > section[id]")];
+      const navLinks = [...document.querySelectorAll(".nav-links a[data-section]")];
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const cipherForm = $("cipherForm");
+      const cipherInput = $("cipherInput");
+      const submitStatus = $("submitStatus");
+
+      const academicYearEl = $("academicYear");
+      const monthLabelEl = $("monthLabel");
+      const stageLabelEl = $("stageLabel");
+
+      const progressPanel = $("progressPanel");
+      const countdownWrap = $("countdownWrap");
+      const adminNav = $("adminNav");
+
+      const cluePanel = $("cluePanel");
+      const clueLabel = $("clueLabel");
+      const clueCipher = $("clueCipher");
+      const clueHint = $("clueHint");
+      const clueMedia = $("clueMedia");
+
+      const successPanel = $("successPanel");
+      const successDesc = $("successDesc");
+      const successBtn = $("successBtn");
+
+      const ADMIN_KEYWORD = "admin";
+      const STAGE_LABELS = ["密文一", "密文二", "密文三"];
+
+      /* ============================================================
+         2. 學年推算（9 月為界）
+      ============================================================ */
+      function inferAcademicYear(year, month) {
+        const y1 = month >= 9 ? year : year - 1;
+        const y2 = y1 + 1;
+        return `${y1}–${y2}`;
+      }
+
+      /* ============================================================
+         3. 導航 / 滾動 / 吸附
+      ============================================================ */
       let homeWheelLocked = false;
       let homeWheelUnlockTimer = 0;
 
       function isHomeAtTop() {
         return window.scrollY < Math.max(40, home.offsetHeight * 0.12);
       }
-
       function enableHomeSnap(enabled) {
         html.classList.toggle("home-snap", enabled);
       }
-
-      // 只有首頁啟用吸附；離開首頁後不再強制快速滾動
       function updateHomeSnap() {
         enableHomeSnap(isHomeAtTop());
       }
@@ -669,18 +929,13 @@
       window.addEventListener("wheel", event => {
         if (reduceMotion || homeWheelLocked || !isHomeAtTop()) return;
         if (Math.abs(event.deltaY) < 8) return;
-
-        // 只攔截首頁向下滾動；向上滾動及後續頁面不受影響
         if (event.deltaY <= 0) return;
 
         event.preventDefault();
         homeWheelLocked = true;
         enableHomeSnap(true);
 
-        overview.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
+        overview.scrollIntoView({ behavior: "smooth", block: "start" });
 
         window.clearTimeout(homeWheelUnlockTimer);
         homeWheelUnlockTimer = window.setTimeout(() => {
@@ -691,13 +946,7 @@
 
       window.addEventListener("scroll", updateHomeSnap, { passive: true });
       window.addEventListener("resize", updateHomeSnap, { passive: true });
-
       updateHomeSnap();
-      const navHome = document.getElementById("navHome");
-      const scrollCue = document.getElementById("scrollCue");
-      const sections = [...document.querySelectorAll("main > section[id]")];
-      const navLinks = [...document.querySelectorAll(".nav-links a")];
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function scrollToSection(id) {
         const target = document.getElementById(id);
@@ -714,9 +963,17 @@
         });
       });
 
+      function refreshAdminNav() {
+        adminNav?.classList.toggle("show", getStoredFlag("ccc_admin_session") === "1");
+      }
+      refreshAdminNav();
+      window.addEventListener("focus", refreshAdminNav);
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) refreshAdminNav();
+      });
+
       const homeObserver = new IntersectionObserver(entries => {
-        const entry = entries[0];
-        nav.classList.toggle("visible", !entry.isIntersecting);
+        nav.classList.toggle("visible", !entries[0].isIntersecting);
       }, { threshold: 0.12 });
       homeObserver.observe(home);
 
@@ -730,13 +987,285 @@
       }, { rootMargin: "-25% 0px -55% 0px", threshold: 0 });
       sections.slice(1).forEach(section => sectionObserver.observe(section));
 
-      // Month progress and countdown use Hong Kong time (UTC+8), independent of the visitor's timezone.
+      /* ============================================================
+         4. 賽事資料
+      ============================================================ */
+      let allContests = [];
+      let contest = null;
+      let currentLevel = 1;   // 1, 2, 3 → 進行中；4 → 已完成
+
+      const MONTH_NAMES = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
+                           "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."];
+      const monthName = m => MONTH_NAMES[m - 1] || "";
+
+      const escapeHtml = s => String(s).replace(/[&<>"']/g, c =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      const escapeAttr = s => String(s ?? "").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
+      function setStatus(text, kind) {
+        submitStatus.textContent = text;
+        if (kind) submitStatus.dataset.kind = kind;
+        else delete submitStatus.dataset.kind;
+      }
+      function clearStatus() {
+        submitStatus.textContent = "";
+        delete submitStatus.dataset.kind;
+      }
+      function setStageLabel(level) {
+        if (level === 4) {
+          stageLabelEl.textContent = "已完成";
+        } else {
+          stageLabelEl.textContent = STAGE_LABELS[level - 1] || "密文";
+        }
+      }
+
+      async function sha256(text) {
+        const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+        return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, "0")).join("");
+      }
+
+      /* ---------- 載入賽事索引 ---------- */
+      async function loadContest() {
+        const now = new Date();
+        const yy = now.getFullYear();
+        const mm = now.getMonth() + 1;
+
+        // 預設按當前日期推算學年（9 月為界）
+        academicYearEl.textContent = inferAcademicYear(yy, mm);
+
+        try {
+          const res = await fetch("./data/contests.json", { cache: "no-store" });
+          if (!res.ok) throw new Error("missing");
+          const data = await res.json();
+          allContests = Array.isArray(data.contests) ? data.contests : [];
+          contest = allContests.find(c =>
+            Number(c.year) === yy && Number(c.month) === mm && c.published !== false
+          ) || null;
+        } catch (err) {
+          allContests = [];
+          contest = null;
+        }
+
+        if (!contest) {
+          monthLabelEl.textContent = `${monthName(mm)} · 暫無賽事`;
+          stageLabelEl.textContent = "本月暫無賽事安排";
+          cipherInput.placeholder = "輸入你找到的密文…";
+          progressPanel.classList.add("hidden");
+          countdownWrap.classList.add("hidden");
+          cluePanel.classList.add("hidden");
+          successPanel.classList.add("hidden");
+          cipherForm.style.display = "";
+          clearStatus();
+          renderArchive();
+          return;
+        }
+
+        // 有賽事時，由 contest.schoolYear 反推顯示（"26-27" → "2026–2027"）
+        if (contest.schoolYear) {
+          const [a, b] = String(contest.schoolYear).split("-");
+          academicYearEl.textContent = `20${a}–20${b}`;
+        }
+        // 否則沿用上面已按 9 月為界推算好的預設值
+
+        monthLabelEl.textContent = `${contest.monthName || monthName(mm)} · ${contest.theme || "月度賽事"}`;
+        progressPanel.classList.remove("hidden");
+        countdownWrap.classList.remove("hidden");
+
+        // 恢復進度
+        currentLevel = Number(sessionStorage.getItem("ccc_level") || "1");
+        if (!(currentLevel >= 1 && currentLevel <= 4)) currentLevel = 1;
+
+        if (currentLevel === 4) {
+          showFinalSubmission();
+        } else if (currentLevel >= 2) {
+          try {
+            const data = await fetchLevelData(currentLevel);
+            renderCluePanel(data, currentLevel);
+          } catch (e) {
+            currentLevel = 1;
+            sessionStorage.setItem("ccc_level", "1");
+            cluePanel.classList.add("hidden");
+          }
+        } else {
+          cluePanel.classList.add("hidden");
+        }
+
+        setStageLabel(currentLevel);
+        renderArchive();
+      }
+
+      /* ---------- 讀取單一關卡 JSON ---------- */
+      async function fetchLevelData(level) {
+        if (!contest || !contest.basePath) throw new Error("尚未載入賽事");
+        const url = `./${contest.basePath}/lv${level}.json`;
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`無法載入第 ${level} 關資料（${res.status}）`);
+        return await res.json();
+      }
+
+      /* ---------- 顯示關卡密文 ---------- */
+      function renderCluePanel(data, level) {
+        if (!data) {
+          cluePanel.classList.add("hidden");
+          return;
+        }
+        clueLabel.textContent = `第${["一", "二", "三"][level - 1]}關密文`;
+        clueCipher.textContent = data.ciphertext || "（本關未提供密文內容）";
+
+        if (data.hint) {
+          clueHint.textContent = `提示：${data.hint}`;
+          clueHint.classList.remove("hidden");
+        } else {
+          clueHint.textContent = "";
+          clueHint.classList.add("hidden");
+        }
+
+        clueMedia.innerHTML = "";
+        const url = data.mediaUrl;
+        if (url) {
+          if (/\.(png|jpe?g|gif|webp|svg|avif)(\?|#|$)/i.test(url)) {
+            const img = document.createElement("img");
+            img.src = url;
+            img.alt = "關卡媒體";
+            img.loading = "lazy";
+            clueMedia.appendChild(img);
+          } else if (/\.(mp4|webm|ogv|mov)(\?|#|$)/i.test(url)) {
+            const video = document.createElement("video");
+            video.src = url;
+            video.controls = true;
+            video.preload = "metadata";
+            clueMedia.appendChild(video);
+          } else if (/\.(mp3|wav|ogg|m4a|aac)(\?|#|$)/i.test(url)) {
+            const audio = document.createElement("audio");
+            audio.src = url;
+            audio.controls = true;
+            clueMedia.appendChild(audio);
+          } else {
+            const a = document.createElement("a");
+            a.href = url;
+            a.target = "_blank";
+            a.rel = "noopener";
+            a.className = "clue-media-link";
+            a.textContent = "開啟媒體連結 ↗";
+            clueMedia.appendChild(a);
+          }
+        }
+
+        cluePanel.classList.remove("hidden");
+        cluePanel.style.animation = "none";
+        void cluePanel.offsetWidth;
+        cluePanel.style.animation = "";
+      }
+
+      /* ---------- 顯示完成卡片 ---------- */
+      function showFinalSubmission() {
+        cipherForm.style.display = "none";
+        cluePanel.classList.add("hidden");
+        clearStatus();
+        setStageLabel(4);
+        successPanel.classList.remove("hidden");
+
+        const formUrl = contest?.googleFormUrl || "";
+        if (formUrl) {
+          successDesc.textContent = "請按下方按鈕前往提交你的答案，以記錄成績。";
+          successBtn.href = formUrl;
+          successBtn.classList.remove("hidden");
+        } else {
+          successDesc.textContent = "主辦方尚未提供提交連結，請向 IT 學會查詢。";
+          successBtn.href = "#";
+          successBtn.classList.add("hidden");
+        }
+      }
+
+      /* ---------- 存檔渲染 ---------- */
+      function renderArchive() {
+        const host = $("archiveList");
+        const empty = $("archiveEmpty");
+        if (!host) return;
+
+        const now = new Date();
+        const yy = now.getFullYear();
+        const mm = now.getMonth() + 1;
+        const past = allContests.filter(c =>
+          Number(c.year) < yy || (Number(c.year) === yy && Number(c.month) < mm)
+        );
+
+        if (!past.length) {
+          host.innerHTML = "";
+          if (empty) empty.style.display = "";
+          return;
+        }
+        if (empty) empty.style.display = "none";
+        host.innerHTML = past.map(c =>
+          `<p>${escapeHtml(`${c.year} / ${c.monthName || monthName(c.month)} · ${c.theme || "未命名主題"}`)}</p>`
+        ).join("");
+      }
+
+      /* ============================================================
+         5. 提交密文
+      ============================================================ */
+      cipherForm.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const value = cipherInput.value.trim();
+        if (!value) return;
+
+        // 管理員入口（任何時候都可用）
+        if (value.toLowerCase() === ADMIN_KEYWORD) {
+          cipherInput.value = "";
+          location.href = "./admin.html";
+          return;
+        }
+
+        if (!contest) return;
+        if (currentLevel > 3) return;
+
+        const stage = contest.levels?.[currentLevel - 1];
+        const expected = stage?.cipherHash || "";
+        if (!expected) {
+          setStatus("本階段尚未設定驗證資料。", "warn");
+          return;
+        }
+
+        const hash = await sha256(value);
+        if (hash !== expected) {
+          setStatus("密文不正確，請再試一次。", "warn");
+          return;
+        }
+
+        // 驗證通過
+        if (currentLevel < 3) {
+          currentLevel += 1;
+          sessionStorage.setItem("ccc_level", String(currentLevel));
+          cipherInput.value = "";
+          setStageLabel(currentLevel);
+
+          try {
+            const data = await fetchLevelData(currentLevel);
+            renderCluePanel(data, currentLevel);
+            setStatus(`正確！已解鎖第${["一", "二", "三"][currentLevel - 1]}關密文。`, "ok");
+          } catch (err) {
+            cluePanel.classList.add("hidden");
+            setStatus("正確，但無法載入下一關資料，請重新整理頁面。", "warn");
+          }
+        } else {
+          currentLevel = 4;
+          sessionStorage.setItem("ccc_level", "4");
+          cipherInput.value = "";
+          setStatus("恭喜完成所有階段！", "ok");
+          showFinalSubmission();
+        }
+      });
+
+      /* ============================================================
+         6. 月份進度 + 倒計時（香港時間 UTC+8）
+      ============================================================ */
       const HKT_OFFSET_MS = 8 * 60 * 60 * 1000;
       const pad = n => String(n).padStart(2, "0");
-      const dateInHKT = date => new Date(date.getTime() + HKT_OFFSET_MS);
-      const formatHKTDate = date => {
-        const d = dateInHKT(date);
-        return `${d.getUTCFullYear()}/${pad(d.getUTCMonth() + 1)}/${pad(d.getUTCDate())}`;
+      const dateInHKT = d => new Date(d.getTime() + HKT_OFFSET_MS);
+      const formatHKTDate = d => {
+        const x = dateInHKT(d);
+        return `${x.getUTCFullYear()}/${pad(x.getUTCMonth() + 1)}/${pad(x.getUTCDate())}`;
       };
 
       function getMonthBounds(now) {
@@ -745,23 +1274,35 @@
         const month = hktNow.getUTCMonth();
         const start = Date.UTC(year, month, 1) - HKT_OFFSET_MS;
         const nextStart = Date.UTC(year, month + 1, 1) - HKT_OFFSET_MS;
-        // Provisional answer release time: 23:59:00 Hong Kong time on the final day.
         const release = nextStart - 60 * 1000;
         return { start, nextStart, release, year, month };
       }
 
       function updateMonthProgress() {
+        if (progressPanel.classList.contains("hidden")) return;
+
         const now = new Date();
-        const { start, nextStart, release, year, month } = getMonthBounds(now);
+        const { start, nextStart, release: defaultRelease, year, month } = getMonthBounds(now);
+
+        let release = defaultRelease;
+        if (contest && contest.endAt) {
+          const t = new Date(contest.endAt).getTime();
+          if (!Number.isNaN(t)) release = t;
+        }
+
         const ratio = Math.max(0, Math.min(1, (now.getTime() - start) / (nextStart - start)));
         const percent = Math.floor(ratio * 100);
-        document.getElementById("progressFill").style.width = `${ratio * 100}%`;
-        document.getElementById("progressPercent").textContent = `${percent}%`;
-        document.getElementById("progressTrack").setAttribute("aria-valuenow", String(percent));
-        document.getElementById("progressTitle").textContent = `${year} 年 ${month + 1} 月解謎進度`;
-        document.getElementById("monthDescription").textContent = "本月時間進度 · 每月一日開啟新挑戰";
-        document.getElementById("periodStart").textContent = formatHKTDate(new Date(start));
-        document.getElementById("periodEnd").textContent = formatHKTDate(new Date(nextStart - 1));
+        $("progressFill").style.width = `${ratio * 100}%`;
+        $("progressPercent").textContent = `${percent}%`;
+        $("progressTrack").setAttribute("aria-valuenow", String(percent));
+        $("progressTitle").textContent = `${year} 年 ${month + 1} 月解謎進度`;
+        $("monthDescription").textContent = contest
+          ? `本月主題：${contest.theme || "未設定"} · 每月一日開啟新挑戰`
+          : "每月一日開啟新挑戰，月底公布謎底。";
+        $("periodStart").textContent = formatHKTDate(new Date(start));
+        $("periodEnd").textContent = formatHKTDate(new Date(nextStart - 1));
+
+        if (!contest) return;
 
         let remaining = Math.max(0, release - now.getTime());
         const days = Math.floor(remaining / 86400000); remaining %= 86400000;
@@ -769,37 +1310,163 @@
         const minutes = Math.floor(remaining / 60000); remaining %= 60000;
         const seconds = Math.floor(remaining / 1000);
 
-        document.getElementById("days").textContent = pad(days);
-        document.getElementById("hours").textContent = pad(hours);
-        document.getElementById("minutes").textContent = pad(minutes);
-        document.getElementById("seconds").textContent = pad(seconds);
-        document.getElementById("countdownCaption").textContent =
+        $("days").textContent = pad(days);
+        $("hours").textContent = pad(hours);
+        $("minutes").textContent = pad(minutes);
+        $("seconds").textContent = pad(seconds);
+        $("countdownCaption").textContent =
           now.getTime() >= release
             ? "本月謎底公布時間已到。實際公布狀態請以 IT 學會公告為準。"
             : `距離暫定謎底公布時間尚有一段時間 · 香港時間 ${formatHKTDate(new Date(release))} 23:59`;
       }
+
       updateMonthProgress();
       window.setInterval(updateMonthProgress, 1000);
 
-      // Low-amplitude inward-curved triangular mesh with sparse, slowly changing glows.
-      const canvas = document.getElementById("mesh");
+      /* ============================================================
+         7. 三角網格背景
+      ============================================================ */
+      const canvas = $("mesh");
       const ctx = canvas.getContext("2d", { alpha: true });
-      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      let width = 0, height = 0, dpr = 1, points = [], triangles = [], edges = [];
+
+      let width = 0, height = 0, dpr = 1;
+      let points = [], edges = [], glows = [];
       let rafId = 0, lastFrame = 0;
+
       const spacing = 62;
-      const glowNodes = [];
       const rand = (min, max) => min + Math.random() * (max - min);
 
-      function warpPoint(x, y, cols, rows) {
+      const SWEEP_PERIOD = 10000;
+      const SWEEP_DURATION = 6500;
+
+      function warpPoint(x, y) {
         const cx = width / 2, cy = height / 2;
         const dx = x - cx, dy = y - cy;
         const nx = dx / Math.max(cx, 1), ny = dy / Math.max(cy, 1);
         const r2 = nx * nx + ny * ny;
-        // Small negative radial displacement: subtle inward/funnel-like curvature, not a bulging fisheye.
         const strength = 0.052;
         const factor = 1 - strength * r2;
         return { x: cx + dx * factor, y: cy + dy * factor };
+      }
+
+      function buildMesh() {
+        const cols = Math.ceil(width / spacing) + 3;
+        const rows = Math.ceil(height / spacing) + 3;
+
+        points = [];
+        edges = [];
+        glows = [];
+
+        for (let row = -1; row < rows; row++) {
+          points[row + 1] = [];
+          for (let col = -1; col < cols; col++) {
+            const baseX = col * spacing + ((row & 1) ? spacing / 2 : 0);
+            const baseY = row * spacing * 0.866;
+            const jitterX = rand(-3.5, 3.5);
+            const jitterY = rand(-3.5, 3.5);
+            const warped = warpPoint(baseX + jitterX, baseY + jitterY);
+            points[row + 1][col + 1] = { x: warped.x, y: warped.y };
+          }
+        }
+
+        for (let r = 0; r < points.length - 1; r++) {
+          for (let c = 0; c < points[r].length - 1; c++) {
+            const a = points[r][c], b = points[r][c + 1];
+            const d = points[r + 1][c], e = points[r + 1][c + 1];
+            if (!a || !b || !d || !e) continue;
+            pushEdge(a, b); pushEdge(a, d); pushEdge(b, d);
+            pushEdge(b, e); pushEdge(d, e);
+          }
+        }
+
+        const glowCount = Math.min(260, Math.max(30, Math.round((width * height) / 16000)));
+        for (let i = 0; i < glowCount; i++) {
+          const period = rand(3600, 12000);
+          glows.push({
+            edge: edges[Math.floor(Math.random() * edges.length)],
+            start: rand(0, period),
+            period,
+            duration: period * rand(0.30, 0.52),
+            strength: rand(0.40, 0.92)
+          });
+        }
+      }
+
+      function pushEdge(a, b) {
+        edges.push({
+          a, b,
+          mx: (a.x + b.x) * 0.5,
+          my: (a.y + b.y) * 0.5
+        });
+      }
+
+      function drawEdgeGlow(edge, alpha) {
+        ctx.beginPath();
+        ctx.moveTo(edge.a.x, edge.a.y);
+        ctx.lineTo(edge.b.x, edge.b.y);
+        ctx.strokeStyle = `rgba(126, 202, 255, ${Math.min(0.95, alpha)})`;
+        ctx.lineWidth = 1 + alpha * 1.6;
+        ctx.shadowColor = `rgba(58, 148, 255, ${Math.min(1, alpha * 0.9)})`;
+        ctx.shadowBlur = 9 + alpha * 15;
+        ctx.stroke();
+      }
+
+      function drawSweep(time) {
+        const t = time % SWEEP_PERIOD;
+        if (t > SWEEP_DURATION) return;
+
+        const p = t / SWEEP_DURATION;
+        const envelope = Math.sin(p * Math.PI);
+        if (envelope < 0.03) return;
+
+        const sweepX = (-0.18 + p * 1.36) * width;
+        const sigma = Math.max(75, width * 0.085);
+        const inv = 1 / (2 * sigma * sigma);
+        const reach = sigma * 3;
+
+        ctx.save();
+        ctx.lineCap = "round";
+        for (const edge of edges) {
+          const dx = edge.mx - sweepX;
+          if (dx > reach || dx < -reach) continue;
+          const g = Math.exp(-dx * dx * inv) * envelope;
+          if (g < 0.05) continue;
+          ctx.beginPath();
+          ctx.moveTo(edge.a.x, edge.a.y);
+          ctx.lineTo(edge.b.x, edge.b.y);
+          ctx.strokeStyle = `rgba(150, 210, 255, ${Math.min(0.30, g * 0.30)})`;
+          ctx.lineWidth = 0.8 + g * 1.0;
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawMesh(time) {
+        ctx.clearRect(0, 0, width, height);
+
+        ctx.lineWidth = 0.72;
+        ctx.strokeStyle = "rgba(105, 151, 207, 0.105)";
+        ctx.beginPath();
+        for (const edge of edges) {
+          ctx.moveTo(edge.a.x, edge.a.y);
+          ctx.lineTo(edge.b.x, edge.b.y);
+        }
+        ctx.stroke();
+
+        if (reduceMotion) return;
+
+        drawSweep(time);
+
+        ctx.save();
+        for (const g of glows) {
+          const t = (time + g.start) % g.period;
+          if (t > g.duration) continue;
+          const p = t / g.duration;
+          const alpha = Math.pow(Math.sin(p * Math.PI), 1.25) * g.strength;
+          if (alpha < 0.04) continue;
+          drawEdgeGlow(g.edge, alpha);
+        }
+        ctx.restore();
       }
 
       function resizeCanvas() {
@@ -816,79 +1483,8 @@
         drawMesh(performance.now());
       }
 
-      function buildMesh() {
-        const cols = Math.ceil(width / spacing) + 3;
-        const rows = Math.ceil(height / spacing) + 3;
-        points = [];
-        triangles = [];
-        edges = [];
-        glowNodes.length = 0;
-
-        for (let row = -1; row < rows; row++) {
-          points[row + 1] = [];
-          for (let col = -1; col < cols; col++) {
-            const baseX = col * spacing + ((row & 1) ? spacing / 2 : 0);
-            const baseY = row * spacing * 0.866;
-            const jitterX = rand(-3.5, 3.5);
-            const jitterY = rand(-3.5, 3.5);
-            const warped = warpPoint(baseX + jitterX, baseY + jitterY, cols, rows);
-            points[row + 1][col + 1] = { ...warped, phase: rand(0, Math.PI * 2) };
-          }
-        }
-
-        for (let r = 0; r < points.length - 1; r++) {
-          for (let c = 0; c < points[r].length - 1; c++) {
-            const a = points[r][c], b = points[r][c + 1];
-            const d = points[r + 1][c], e = points[r + 1][c + 1];
-            if (!a || !b || !d || !e) continue;
-            triangles.push([a, b, d], [b, d, e]);
-            edges.push([a, b], [a, d], [b, d], [b, e], [d, e]);
-          }
-        }
-        // Select a sparse set of fixed edges for independent light pulses.
-        const count = Math.max(12, Math.round((width * height) / 32000));
-        for (let i = 0; i < count; i++) {
-          glowNodes.push({
-            edge: edges[Math.floor(Math.random() * edges.length)],
-            phase: rand(0, Math.PI * 2),
-            speed: rand(.00035, .0010),
-            strength: rand(.45, 1.0)
-          });
-        }
-      }
-
-      function drawMesh(time) {
-        ctx.clearRect(0, 0, width, height);
-        ctx.lineWidth = .72;
-        ctx.strokeStyle = "rgba(105, 151, 207, 0.105)";
-        ctx.beginPath();
-        for (const edge of edges) {
-          ctx.moveTo(edge[0].x, edge[0].y);
-          ctx.lineTo(edge[1].x, edge[1].y);
-        }
-        ctx.stroke();
-
-        if (!prefersReducedMotion) {
-          for (const glow of glowNodes) {
-            const wave = (Math.sin(time * glow.speed + glow.phase) + 1) / 2;
-            const alpha = Math.pow(wave, 3) * glow.strength;
-            if (alpha < .035) continue;
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(glow.edge[0].x, glow.edge[0].y);
-            ctx.lineTo(glow.edge[1].x, glow.edge[1].y);
-            ctx.strokeStyle = `rgba(105, 190, 255, ${Math.min(.95, alpha * .9)})`;
-            ctx.lineWidth = 1 + alpha * 1.15;
-            ctx.shadowColor = `rgba(48, 139, 255, ${Math.min(1, alpha)})`;
-            ctx.shadowBlur = 8 + alpha * 12;
-            ctx.stroke();
-            ctx.restore();
-          }
-        }
-      }
-
       function animate(time) {
-        if (time - lastFrame >= 42) {
+        if (time - lastFrame >= 33) {
           drawMesh(time);
           lastFrame = time;
         }
@@ -897,7 +1493,7 @@
 
       const meshObserver = new IntersectionObserver(entries => {
         const visible = entries[0].isIntersecting;
-        if (visible && !prefersReducedMotion && !rafId) {
+        if (visible && !reduceMotion && !rafId) {
           rafId = window.requestAnimationFrame(animate);
         } else if (!visible && rafId) {
           window.cancelAnimationFrame(rafId);
@@ -911,23 +1507,14 @@
         window.clearTimeout(resizeTimer);
         resizeTimer = window.setTimeout(resizeCanvas, 100);
       }, { passive: true });
-      resizeCanvas();
-      if (!prefersReducedMotion) rafId = window.requestAnimationFrame(animate);
 
-      // Front-end placeholder only: no secret answers are embedded in this static file.
-      // Connect this form to a server-side endpoint before using it for a real contest.
-      const cipherForm = document.getElementById("cipherForm");
-      const cipherInput = document.getElementById("cipherInput");
-      const submitStatus = document.getElementById("submitStatus");
-      cipherForm.addEventListener("submit", event => {
-        event.preventDefault();
-        const value = cipherInput.value.trim();
-        if (!value) {
-          submitStatus.textContent = "請先輸入密文。";
-          return;
-        }
-        submitStatus.textContent = "網站驗證功能尚未接駁；正式比賽前需要連接伺服器端驗證。";
-      });
+      resizeCanvas();
+      if (!reduceMotion) rafId = window.requestAnimationFrame(animate);
+
+      /* ============================================================
+         8. 啟動
+      ============================================================ */
+      loadContest();
     })();
   </script>
 </body>
