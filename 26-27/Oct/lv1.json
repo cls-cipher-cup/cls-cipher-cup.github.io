@@ -1,0 +1,10 @@
+{
+  "ciphertext": "5",
+  "hint": "No.",
+  "mediaUrl": "",
+  "cipherHash": "f0393febe8baaa55e32f7be2a7cc180bf34e52137d99e056c817a9c07b8f239a",
+  "encryptedAnswer": "Pp81QR9NTg+BSTmx82yd5EdC07kJ",
+  "iv": "Qbzq8s+W8hw7RmkN",
+  "keyObfuscated": "WnvibUgoc18qxGeM8/rsJzRN/4iv1I4tWtwBASlVKjE=",
+  "keySalt": "static-xor-v1"
+}
