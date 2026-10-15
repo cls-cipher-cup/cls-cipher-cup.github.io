@@ -1,10 +1,10 @@
 {
-  "ciphertext": "-.-./.-./-.--/.--./-/---/--./.-./.-/.--./..../-.--",
-  "hint": "///////////",
+  "ciphertext": "What is \"Cryptography\"?",
+  "hint": "?/?/?/?/-/---/?/?/?/?/..../?",
   "mediaUrl": "",
-  "cipherHash": "b1edaf938c78c6eb2147ea25bcc5630bec673e2ed077dd6b85e3da4ad0b0bb87",
-  "encryptedAnswer": "nSTTQvoszKkD+TTWsQbFuoEqF84TAT/OE4pkEM0T/vqOKhsJJlGaGe4=",
-  "iv": "TOa5DqZWrmWOu+Qz",
-  "keyObfuscated": "LkQV4n9yElz3eMvVZsVdH1z78yRSSxytqbh0zATSang=",
+  "cipherHash": "57bf661b8d7bd85c962c7ea7d180744cdd2893916ab255cffeed3c8303736eb9",
+  "encryptedAnswer": "/99KkML3q/U0EQg6HbGLTRlqS51BQub4s+7QmSmNlbWzyIdiIcPNJswUVssSmVWqO6jcOh3gDrfGRLlIiKxKJZek",
+  "iv": "+fGeNE2xXx512xMh",
+  "keyObfuscated": "LNesW2KFYRGd6ltddcxNibhGT7BJc03p0aI1GWoLXqY=",
   "keySalt": "static-xor-v1"
 }
