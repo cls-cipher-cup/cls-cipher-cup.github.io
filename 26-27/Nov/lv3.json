@@ -2,9 +2,5 @@
   "ciphertext": "5∃∃∃∃, ∃4∃∃∃, ∃∃3∃∃, ∃∃∃2∃, ∃∃∃∃1",
   "hint": "▦, ↺, ①, ./",
   "mediaUrl": "",
-  "cipherHash": "6f67e72075d8fd19ec82e3c7141ac213e2b98ead66aee4944f9fb78b9e05f76b",
-  "encryptedAnswer": "13D273UnXo2WugLMkqB3xmtl6nnBiw3V5wNCFCuOgQw=",
-  "iv": "Y6lsTMHs3zpDvPjV",
-  "keyObfuscated": "DXmQUxBhjqbPuuU2Hc81PRS+DXWAMRWgtge4kMkuIUU=",
-  "keySalt": "static-xor-v1"
+  "sig": ""
 }
