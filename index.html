@@ -680,7 +680,7 @@
   </nav>
 
   <main>
-    <section class="page" id="home" aria-label="密文輸入首頁">
+    <section class="page" id="home" aria-label="明文輸入首頁">
       <canvas id="mesh" aria-hidden="true"></canvas>
       <div class="home-vignette" aria-hidden="true"></div>
 
@@ -693,11 +693,10 @@
           <span class="meta-month" id="monthLabel">載入賽事資料中…</span>
         </p>
 
-        <h1 class="cipher-title" id="stageLabel">密文一</h1>
+        <h1 class="cipher-title" id="stageLabel">階段一</h1>
 
-        <!-- 關卡密文展示（第一關不顯示） -->
         <section class="clue-panel hidden" id="cluePanel" aria-live="polite">
-          <p class="clue-label" id="clueLabel">本關密文</p>
+          <p class="clue-label" id="clueLabel">階段一密文</p>
           <pre class="clue-cipher" id="clueCipher"></pre>
           <p class="clue-hint hidden" id="clueHint"></p>
           <div class="clue-media" id="clueMedia"></div>
@@ -709,12 +708,12 @@
             id="cipherInput"
             name="cipher"
             type="text"
-            placeholder="輸入你找到的密文…"
-            aria-label="輸入密文"
+            placeholder="輸入你找到的明文…"
+            aria-label="輸入明文"
             spellcheck="false"
             autocapitalize="off"
           />
-          <button class="submit-button" type="submit" aria-label="提交密文">
+          <button class="submit-button" type="submit" aria-label="提交明文">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M4.75 12h14.5M13 5.75 19.25 12 13 18.25" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -722,7 +721,6 @@
         </form>
         <p class="submit-status" id="submitStatus" role="status" aria-live="polite"></p>
 
-        <!-- 完成卡片（lv3 通過後顯示） -->
         <section class="success-panel hidden" id="successPanel" aria-live="polite">
           <p class="success-title">恭喜完成本月挑戰！</p>
           <p class="success-desc" id="successDesc">請按下方按鈕前往提交你的答案，以記錄成績。</p>
@@ -820,8 +818,8 @@
       <div class="content-wrap">
         <p class="section-kicker">ARCHIVE</p>
         <h2 class="section-title" id="pastTitle">歷屆題目</h2>
-        <p class="section-lead">重溫過往月份的挑戰與解謎思路。</p>
-        <div class="empty-state" id="archiveEmpty">歷屆題目即將開放。</div>
+        <p class="section-lead">重溫過往月份的挑戰與解謎思路。正式上線後，可在這裡加入各月份的題目、謎底公布及解題紀錄。</p>
+        <div class="empty-state" id="archiveEmpty">歷屆題目即將開放。<br />尚未公布謎底的題目及線索不應在此提前公開。</div>
         <div id="archiveList"></div>
       </div>
     </section>
@@ -845,7 +843,7 @@
       "use strict";
 
       /* ============================================================
-         0. Cookie / localStorage 雙讀（用於判斷管理面板入口）
+         0. Cookie / localStorage 雙讀
       ============================================================ */
       function getStoredFlag(name) {
         let v = '';
@@ -899,7 +897,7 @@
       const successBtn = $("successBtn");
 
       const ADMIN_KEYWORD = "admin";
-      const STAGE_LABELS = ["密文一", "密文二", "密文三"];
+      const STAGE_LABELS = ["階段一", "階段二", "階段三"];
 
       /* ============================================================
          2. 學年推算（9 月為界）
@@ -988,11 +986,50 @@
       sections.slice(1).forEach(section => sectionObserver.observe(section));
 
       /* ============================================================
-         4. 賽事資料
+         4. 驗證（PBKDF2；sig = base64( salt(16) || hash(32) )）
+      ============================================================ */
+      const CYCLES = 300000;
+      const SALT_LEN = 16;
+      const KEY_LEN = 32;
+
+      function b64ToBytes(b64){
+        return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+      }
+
+      async function checkSig(answer, sig){
+        if (!sig) return false;
+        try {
+          const combined = b64ToBytes(sig);
+          if (combined.length !== SALT_LEN + KEY_LEN) return false;
+          const salt = combined.slice(0, SALT_LEN);
+          const expected = combined.slice(SALT_LEN);
+          const keyMaterial = await crypto.subtle.importKey(
+            'raw',
+            new TextEncoder().encode(answer),
+            'PBKDF2',
+            false,
+            ['deriveBits']
+          );
+          const bits = await crypto.subtle.deriveBits(
+            { name:'PBKDF2', salt, iterations: CYCLES, hash:'SHA-256' },
+            keyMaterial,
+            KEY_LEN * 8
+          );
+          const actual = new Uint8Array(bits);
+          let diff = 0;
+          for (let i = 0; i < actual.length; i++) diff |= actual[i] ^ expected[i];
+          return diff === 0;
+        } catch {
+          return false;
+        }
+      }
+
+      /* ============================================================
+         5. 賽事資料
       ============================================================ */
       let allContests = [];
       let contest = null;
-      let currentLevel = 1;   // 1, 2, 3 → 進行中；4 → 已完成
+      let currentLevel = 1;
 
       const MONTH_NAMES = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
                            "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."];
@@ -1000,7 +1037,6 @@
 
       const escapeHtml = s => String(s).replace(/[&<>"']/g, c =>
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-      const escapeAttr = s => String(s ?? "").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 
       function setStatus(text, kind) {
         submitStatus.textContent = text;
@@ -1015,22 +1051,15 @@
         if (level === 4) {
           stageLabelEl.textContent = "已完成";
         } else {
-          stageLabelEl.textContent = STAGE_LABELS[level - 1] || "密文";
+          stageLabelEl.textContent = STAGE_LABELS[level - 1] || "階段";
         }
       }
 
-      async function sha256(text) {
-        const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-        return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, "0")).join("");
-      }
-
-      /* ---------- 載入賽事索引 ---------- */
       async function loadContest() {
         const now = new Date();
         const yy = now.getFullYear();
         const mm = now.getMonth() + 1;
 
-        // 預設按當前日期推算學年（9 月為界）
         academicYearEl.textContent = inferAcademicYear(yy, mm);
 
         try {
@@ -1049,7 +1078,7 @@
         if (!contest) {
           monthLabelEl.textContent = `${monthName(mm)} · 暫無賽事`;
           stageLabelEl.textContent = "本月暫無賽事安排";
-          cipherInput.placeholder = "輸入你找到的密文…";
+          cipherInput.placeholder = "輸入你找到的明文…";
           progressPanel.classList.add("hidden");
           countdownWrap.classList.add("hidden");
           cluePanel.classList.add("hidden");
@@ -1060,57 +1089,63 @@
           return;
         }
 
-        // 有賽事時，由 contest.schoolYear 反推顯示（"26-27" → "2026–2027"）
         if (contest.schoolYear) {
           const [a, b] = String(contest.schoolYear).split("-");
           academicYearEl.textContent = `20${a}–20${b}`;
         }
-        // 否則沿用上面已按 9 月為界推算好的預設值
 
         monthLabelEl.textContent = `${contest.monthName || monthName(mm)} · ${contest.theme || "月度賽事"}`;
         progressPanel.classList.remove("hidden");
         countdownWrap.classList.remove("hidden");
 
-        // 恢復進度
         currentLevel = Number(sessionStorage.getItem("ccc_level") || "1");
         if (!(currentLevel >= 1 && currentLevel <= 4)) currentLevel = 1;
 
         if (currentLevel === 4) {
           showFinalSubmission();
-        } else if (currentLevel >= 2) {
+        } else {
+          let loaded = false;
           try {
             const data = await fetchLevelData(currentLevel);
             renderCluePanel(data, currentLevel);
-          } catch (e) {
+            loaded = true;
+          } catch (e) {}
+
+          if (!loaded && currentLevel > 1) {
             currentLevel = 1;
             sessionStorage.setItem("ccc_level", "1");
+            setStageLabel(currentLevel);
+            try {
+              const data = await fetchLevelData(1);
+              renderCluePanel(data, 1);
+              loaded = true;
+            } catch (e) {}
+          }
+
+          if (!loaded) {
             cluePanel.classList.add("hidden");
           }
-        } else {
-          cluePanel.classList.add("hidden");
         }
 
         setStageLabel(currentLevel);
         renderArchive();
       }
 
-      /* ---------- 讀取單一關卡 JSON ---------- */
       async function fetchLevelData(level) {
         if (!contest || !contest.basePath) throw new Error("尚未載入賽事");
         const url = `./${contest.basePath}/lv${level}.json`;
         const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error(`無法載入第 ${level} 關資料（${res.status}）`);
+        if (!res.ok) throw new Error(`無法載入第 ${level} 階段資料（${res.status}）`);
         return await res.json();
       }
 
-      /* ---------- 顯示關卡密文 ---------- */
       function renderCluePanel(data, level) {
         if (!data) {
           cluePanel.classList.add("hidden");
           return;
         }
-        clueLabel.textContent = `第${["一", "二", "三"][level - 1]}關密文`;
-        clueCipher.textContent = data.ciphertext || "（本關未提供密文內容）";
+        clueLabel.textContent = `${STAGE_LABELS[level - 1] || "階段"}密文`;
+        clueCipher.textContent = data.ciphertext || "（本階段未提供密文內容）";
 
         if (data.hint) {
           clueHint.textContent = `提示：${data.hint}`;
@@ -1157,7 +1192,6 @@
         cluePanel.style.animation = "";
       }
 
-      /* ---------- 顯示完成卡片 ---------- */
       function showFinalSubmission() {
         cipherForm.style.display = "none";
         cluePanel.classList.add("hidden");
@@ -1171,13 +1205,12 @@
           successBtn.href = formUrl;
           successBtn.classList.remove("hidden");
         } else {
-          successDesc.textContent = "主辦方尚未提供提交連結，請向 IT 學會查詢。";
+          successDesc.textContent = "主辦方尚未提供提交連結，請在本月月初所發佈的Gmail中進入Google Form填寫。";
           successBtn.href = "#";
           successBtn.classList.add("hidden");
         }
       }
 
-      /* ---------- 存檔渲染 ---------- */
       function renderArchive() {
         const host = $("archiveList");
         const empty = $("archiveEmpty");
@@ -1202,7 +1235,7 @@
       }
 
       /* ============================================================
-         5. 提交密文
+         6. 提交明文
       ============================================================ */
       cipherForm.addEventListener("submit", async event => {
         event.preventDefault();
@@ -1210,7 +1243,6 @@
         const value = cipherInput.value.trim();
         if (!value) return;
 
-        // 管理員入口（任何時候都可用）
         if (value.toLowerCase() === ADMIN_KEYWORD) {
           cipherInput.value = "";
           location.href = "./admin.html";
@@ -1221,19 +1253,19 @@
         if (currentLevel > 3) return;
 
         const stage = contest.levels?.[currentLevel - 1];
-        const expected = stage?.cipherHash || "";
-        if (!expected) {
+        const sig = stage?.sig || "";
+        if (!sig) {
           setStatus("本階段尚未設定驗證資料。", "warn");
           return;
         }
 
-        const hash = await sha256(value);
-        if (hash !== expected) {
-          setStatus("密文不正確，請再試一次。", "warn");
+        setStatus("驗證中…", "");
+        const ok = await checkSig(value, sig);
+        if (!ok) {
+          setStatus("明文不正確，請再試一次。", "warn");
           return;
         }
 
-        // 驗證通過
         if (currentLevel < 3) {
           currentLevel += 1;
           sessionStorage.setItem("ccc_level", String(currentLevel));
@@ -1243,10 +1275,10 @@
           try {
             const data = await fetchLevelData(currentLevel);
             renderCluePanel(data, currentLevel);
-            setStatus(`正確！已解鎖第${["一", "二", "三"][currentLevel - 1]}關密文。`, "ok");
+            setStatus(`正確！已解鎖${STAGE_LABELS[currentLevel - 1]}密文。`, "ok");
           } catch (err) {
             cluePanel.classList.add("hidden");
-            setStatus("正確，但無法載入下一關資料，請重新整理頁面。", "warn");
+            setStatus("正確，但無法載入下一階段資料，請重新整理頁面。", "warn");
           }
         } else {
           currentLevel = 4;
@@ -1258,7 +1290,7 @@
       });
 
       /* ============================================================
-         6. 月份進度 + 倒計時（香港時間 UTC+8）
+         7. 月份進度 + 倒計時
       ============================================================ */
       const HKT_OFFSET_MS = 8 * 60 * 60 * 1000;
       const pad = n => String(n).padStart(2, "0");
@@ -1324,7 +1356,7 @@
       window.setInterval(updateMonthProgress, 1000);
 
       /* ============================================================
-         7. 三角網格背景
+         8. 三角網格背景
       ============================================================ */
       const canvas = $("mesh");
       const ctx = canvas.getContext("2d", { alpha: true });
@@ -1512,7 +1544,7 @@
       if (!reduceMotion) rafId = window.requestAnimationFrame(animate);
 
       /* ============================================================
-         8. 啟動
+         9. 啟動
       ============================================================ */
       loadContest();
     })();
