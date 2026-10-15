@@ -4,70 +4,6 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#05070d">
 <title>CLS Cipher Cup · 管理面板</title>
-<style>
-:root{color-scheme:dark;--bg:#05070d;--panel:rgba(13,19,31,.76);--line:rgba(160,196,238,.15);--muted:#8c9bb2;--text:#edf4ff;--cyan:#72e4ff;--blue:#74baff;--page-pad:clamp(20px,5vw,76px)}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans HK","PingFang HK","Microsoft JhengHei",sans-serif;scrollbar-width:none;-ms-overflow-style:none;overflow-x:hidden}
-html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{display:none;width:0;height:0}
-button,input{font:inherit}button{color:inherit}
-
-#mesh{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.9}
-.vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(2,4,9,.24) 74%,rgba(2,4,9,.76) 130%),linear-gradient(180deg,rgba(2,4,9,.14),transparent 24%,transparent 78%,rgba(2,4,9,.42))}
-
-.site-nav{position:fixed;z-index:20;top:16px;left:50%;width:min(1120px,calc(100% - 32px));transform:translate(-50%,0);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 14px 11px 20px;border:1px solid rgba(210,229,255,.13);border-radius:999px;background:rgba(8,12,21,.66);box-shadow:0 12px 42px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.05);-webkit-backdrop-filter:blur(24px) saturate(145%);backdrop-filter:blur(24px) saturate(145%)}
-.nav-brand{display:flex;flex:0 0 auto;align-items:center;justify-content:flex-start;width:150px;height:32px;padding:0;border:0;background:transparent;cursor:pointer;text-decoration:none}
-.nav-brand img{display:block;height:100%;object-fit:contain;object-position:left center;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 0 8px rgba(74,151,245,.12));transition:filter .25s ease,opacity .25s ease}
-.nav-brand:hover img{filter:drop-shadow(0 0 12px rgba(105,180,255,.35));opacity:.9}
-.nav-links{display:flex;align-items:center;gap:clamp(12px,2.8vw,30px)}
-.nav-links a,.nav-links button{position:relative;padding:7px 0;color:#aab8cd;text-decoration:none;font-size:13px;white-space:nowrap;background:transparent;border:0;cursor:pointer;transition:color .2s ease}
-.nav-links a:hover,.nav-links button:hover{color:#f4f8ff}
-.nav-links a.active{color:#f4f8ff}
-.nav-links a.active::after{position:absolute;right:0;bottom:0;left:0;height:1px;background:#7abaff;content:"";box-shadow:0 0 9px rgba(122,186,255,.65)}
-
-main{position:relative;z-index:1;width:min(1200px,calc(100% - 32px));margin:96px auto 80px;padding:0}
-.welcome{padding:30px 0 22px}
-.kicker{font-size:11px;letter-spacing:.23em;color:var(--cyan);text-transform:uppercase}
-h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
-.sub{color:var(--muted);line-height:1.7}
-.panel{border:1px solid var(--line);background:linear-gradient(135deg,rgba(20,35,56,.52),rgba(9,14,24,.68)),rgba(10,15,25,.75);border-radius:22px;padding:24px;margin:18px 0;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 18px 60px rgba(0,0,0,.12)}
-.panel h2{margin:0 0 18px;font-size:21px;font-weight:550;letter-spacing:-.02em}
-.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.field{display:flex;flex-direction:column;gap:7px;margin:0 0 14px}
-.field label{font-size:13px;color:#c4d0e7}
-.field input,.field textarea,.field select{width:100%;background:rgba(3,7,14,.55);border:1px solid rgba(160,196,238,.15);border-radius:10px;padding:12px;color:var(--text);font:inherit;outline:none;transition:border-color .2s ease,box-shadow .2s ease}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(125,190,255,.56);box-shadow:0 0 0 3px rgba(75,151,232,.08)}
-.field textarea{min-height:90px;resize:vertical}
-.field-row{display:flex;gap:8px;align-items:center}
-.field-row select{flex:1;min-width:0}
-.icon-btn{flex:0 0 auto;width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(160,196,238,.2);background:rgba(23,35,58,.6);color:#dceaff;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .15s ease}
-.icon-btn:hover{background:rgba(40,62,102,.7);border-color:rgba(160,196,238,.4);transform:translateY(-1px)}
-.icon-btn.danger:hover{background:rgba(109,39,56,.7);border-color:rgba(255,140,160,.4)}
-.btn{border:1px solid #9abaff55;background:linear-gradient(135deg,#426fe0,#4a9fc6);color:white;border-radius:10px;padding:11px 16px;font-weight:650;cursor:pointer;transition:transform .15s ease,filter .15s ease}
-.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
-.btn.secondary{background:#17233a;border-color:rgba(160,196,238,.18)}
-.btn.danger{background:#6d2738;border-color:rgba(255,140,160,.22)}
-.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.status{min-height:22px;color:#9decc8;font-size:13px;margin:12px 0 0;white-space:pre-wrap}
-.muted{color:var(--muted);font-size:12px;line-height:1.7}
-.hidden{display:none!important}
-.contest-item{padding:16px;border:1px solid rgba(159,188,225,.12);border-radius:14px;background:rgba(10,16,27,.6);margin:10px 0;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.contest-item strong{display:block;margin-bottom:5px}
-.level{padding:16px;border:1px solid rgba(159,188,225,.12);border-radius:14px;margin:12px 0;background:rgba(10,16,27,.55)}
-.level h3{margin:0 0 14px;color:var(--cyan);font-size:15px}
-.badge{font-size:11px;color:#b5c5e6}
-.hr{border:0;border-top:1px solid rgba(159,188,225,.12);margin:24px 0}
-.path-hint{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#8fb4e2;background:rgba(3,7,14,.5);padding:6px 10px;border-radius:8px;border:1px dashed rgba(160,196,238,.2);margin-top:4px;word-break:break-all}
-@media(max-width:720px){
- .site-nav{top:9px;width:calc(100% - 18px);padding:9px 12px;gap:12px}
- .nav-brand{width:110px}
- .nav-links{gap:12px}
- .nav-links a,.nav-links button{font-size:11px}
- .row{grid-template-columns:1fr}
- .panel{padding:18px}
- main{width:calc(100% - 20px);margin-top:78px}
- .contest-item{align-items:flex-start;flex-direction:column}
-}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
@@ -109,12 +45,12 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
      <div class="path-hint" id="pathHint">資料將儲存於 ./{學年}/{月份縮寫}/lv1.json … lv3.json</div>
    </div>
    <div class="field"><label for="theme">賽事主題</label><input id="theme" placeholder="例如：The Lost Signal"></div>
-   <div class="field"><label for="endAt">截止時間（香港時間；ISO 格式）</label><input id="endAt" type="text" placeholder="2026-11-30T23:59:00+08:00"></div>
+   <div class="field"><label for="endAt">截止時間（香港時間；自動填入，可手動修改）</label><input id="endAt" type="text" placeholder="2026-11-30T23:59:00+08:00"></div>
    <div class="field"><label for="googleFormUrl">Google Form URL（可留空）</label><input id="googleFormUrl" type="url" placeholder="https://docs.google.com/forms/d/e/…/viewform"></div>
    <hr class="hr">
    <div id="levels"></div>
-   <div class="actions"><button class="btn secondary" id="newBtn" type="button">清空／新增題目</button><button class="btn" id="saveBtn" type="button">加密並發布至 GitHub</button></div>
-   <p class="muted">發布時會以 Web Crypto AES-256-GCM 加密明文答案，SHA-256 雜湊用於前端的密文驗證。索引寫入 <code>data/contests.json</code>，各關卡完整資料寫入 <code>./{學年}/{月份縮寫}/lv1.json</code> 等。</p>
+   <div class="actions"><button class="btn secondary" id="newBtn" type="button">清空／新增題目</button><button class="btn" id="saveBtn" type="button">驗證並發布至 GitHub</button></div>
+   <p class="muted">索引寫入 <code>data/contests.json</code>，各關卡完整資料寫入 <code>./{學年}/{月份縮寫}/lv1.json</code> 等。</p>
    <p class="status" id="editorStatus" role="status"></p>
   </section>
  </div>
@@ -127,12 +63,10 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
 
  let token='', repo='', branch='main', fileSha=null, editingKey=null;
 
- // 資料結構（schemaVersion 2）：
- // { schemaVersion: 2, updatedAt, schoolYears: ["26-27", ...], contests: [ {schoolYear, year, month, ...} ] }
  let contestsData = { schemaVersion: 2, updatedAt: null, schoolYears: [], contests: [] };
 
  /* ============================================================
-    Cookie + localStorage 雙寫（兼容 file:// 與 https://）
+    Cookie + localStorage 雙寫
  ============================================================ */
  const COOKIE_MAX_AGE = 8 * 60 * 60;
  function setCookie(name, value, maxAgeSec = COOKIE_MAX_AGE) {
@@ -168,7 +102,7 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
  }
 
  /* ============================================================
-    背景：與首頁一致的內凹三角網 + 隨機閃爍 + 每 10 秒緩慢掃光
+    背景
  ============================================================ */
  const canvas=$('#mesh'), ctx=canvas.getContext('2d',{alpha:true});
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -309,18 +243,47 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
  function utf8ToB64(str){return btoa(unescape(encodeURIComponent(str)))}
  function b64ToUtf8(b64){return decodeURIComponent(escape(atob(b64.replace(/\n/g,''))))}
 
- async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
- const b64=b=>btoa(String.fromCharCode(...new Uint8Array(b)));
+ /* ============================================================
+    內部驗證（PBKDF2 慢哈希；每關隨機 salt）
+    sig = base64( salt(16) || pbkdf2_hash(32) )
+ ============================================================ */
+ const CYCLES = 300000;
+ const SALT_LEN = 16;
+ const KEY_LEN = 32;
 
- async function encryptAnswer(answer){
-   const raw=crypto.getRandomValues(new Uint8Array(32)),iv=crypto.getRandomValues(new Uint8Array(12));
-   const key=await crypto.subtle.importKey('raw',raw,{name:'AES-GCM'},false,['encrypt']);
-   const cipher=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(answer));
-   const obfuscated=[...raw].map((v,i)=>v^((i*31+0x5a)&255));
-   return {encryptedAnswer:b64(cipher),iv:b64(iv),keyObfuscated:b64(new Uint8Array(obfuscated)),keySalt:'static-xor-v1'};
+ function bytesToB64(bytes){
+   return btoa(String.fromCharCode(...new Uint8Array(bytes)));
+ }
+ function b64ToBytes(b64){
+   return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
  }
 
- // 依「月份在 9 月以上」判斷學年，例如 2026/11 → 26-27；2026/3 → 25-26
+ async function deriveKey(answer, salt){
+   const keyMaterial = await crypto.subtle.importKey(
+     'raw',
+     new TextEncoder().encode(answer),
+     'PBKDF2',
+     false,
+     ['deriveBits']
+   );
+   const bits = await crypto.subtle.deriveBits(
+     { name:'PBKDF2', salt, iterations: CYCLES, hash:'SHA-256' },
+     keyMaterial,
+     KEY_LEN * 8
+   );
+   return new Uint8Array(bits);
+ }
+
+ async function makeSig(answer){
+   const salt = crypto.getRandomValues(new Uint8Array(SALT_LEN));
+   const hash = await deriveKey(answer, salt);
+   const combined = new Uint8Array(SALT_LEN + KEY_LEN);
+   combined.set(salt, 0);
+   combined.set(hash, SALT_LEN);
+   return bytesToB64(combined);
+ }
+
+ // 依「月份在 9 月以上」判斷學年
  function inferSchoolYear(year, month){
    const m=Number(month);
    const y1 = m>=9 ? year : year-1;
@@ -330,6 +293,24 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
 
  function keyOf(c){
    return `${c.schoolYear||'_'}-${c.year}-${String(c.month).padStart(2,'0')}`;
+ }
+
+ /* ============================================================
+    截止時間自動填入（香港時間，當月最後一日 23:59）
+ ============================================================ */
+ function computeEndAt(year, month){
+   const y = Number(year);
+   const m = Number(month);
+   if (!y || !m) return '';
+   const lastDay = new Date(Date.UTC(y, m, 0)).getUTCDate();
+   return `${y}-${String(m).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}T23:59:00+08:00`;
+ }
+ function updateEndAt(){
+   const y = Number($('#year').value);
+   const m = Number($('#month').value);
+   if (!y || y < 2000 || y > 2100) return;
+   if (!m || m < 1 || m > 12) return;
+   $('#endAt').value = computeEndAt(y, m);
  }
 
  /* ============================================================
@@ -355,7 +336,6 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
    return `/repos/${repo.split('/').map(encodeURIComponent).join('/')}/contents/${rel.replace(/^\/+/,'').replace(/^\.\//,'')}`;
  }
 
- // 讀取單一檔案（不存在回 null）
  async function readFile(rel){
    try{
      const f=await api(repoPath(rel));
@@ -366,7 +346,6 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
    }
  }
 
- // 寫入單一檔案（自動偵測既有 sha 以更新）
  async function writeFile(rel, content, message){
    const cleanPath = rel.replace(/^\/+/,'').replace(/^\.\//,'');
    const url = repoPath(cleanPath);
@@ -393,7 +372,7 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
  }
 
  /* ============================================================
-    賽事索引（data/contests.json）
+    賽事索引
  ============================================================ */
  function ensureCurrentSchoolYear(){
    const n=new Date();
@@ -405,9 +384,22 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
  }
 
  function normalizeIndex(raw){
-   // 兼容舊版 schema v1（沒有 schoolYears，levels 是完整資料）
    if(!raw || typeof raw!=='object')return { schemaVersion:2, updatedAt:null, schoolYears:[], contests:[] };
-   if(raw.schemaVersion===2 && Array.isArray(raw.schoolYears))return raw;
+   if(raw.schemaVersion===2 && Array.isArray(raw.schoolYears)){
+     // 仍要清除 levels 裡不應該存在的欄位
+     const out = JSON.parse(JSON.stringify(raw));
+     out.contests = (out.contests||[]).map(c=>({
+       ...c,
+       levels: (c.levels||[]).map(l=>({
+         ciphertext: l.ciphertext||'',
+         hint: l.hint||'',
+         mediaUrl: l.mediaUrl||'',
+         sig: l.sig||''
+       }))
+     }));
+     return out;
+   }
+   // 舊版 schema v1
    const out = { schemaVersion:2, updatedAt:raw.updatedAt||null, schoolYears:[], contests:[] };
    for(const c of (raw.contests||[])){
      const sy = inferSchoolYear(Number(c.year), Number(c.month));
@@ -418,12 +410,11 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
        theme: c.theme, endAt: c.endAt, googleFormUrl: c.googleFormUrl,
        published: c.published !== false,
        basePath: `${sy}/${monthShortNames[Number(c.month)-1]}`,
-       // 只保留 index 需要的欄位（加密資料仍留在原 JSON 裡，但因為是舊版就一併丟掉）
        levels: (c.levels||[]).map(l=>({
          ciphertext: l.ciphertext||'',
          hint: l.hint||'',
          mediaUrl: l.mediaUrl||'',
-         cipherHash: l.cipherHash||''
+         sig: l.sig||''
        }))
      });
    }
@@ -507,7 +498,6 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
    contestsData.schoolYears.push(label);
    contestsData.schoolYears.sort();
    try{
-     // 建立學年資料夾（放一個 .gitkeep 佔位）
      await writeFile(`${label}/.gitkeep`, `# School year ${label}\n`, `Create school year folder ${label}`);
      await writeIndex();
      renderSchoolYearOptions(label);
@@ -549,7 +539,7 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
     關卡編輯
  ============================================================ */
  function renderLevels(levels=[{},{},{}]){
-  $('#levels').innerHTML=levels.map((l,i)=>`<div class="level"><h3>密文 ${['一','二','三'][i]}</h3><div class="field"><label>明文答案（加密後保存）</label><textarea data-field="plaintext" data-level="${i}" placeholder="輸入正確答案">${escapeHtml(l.plaintext||'')}</textarea></div><div class="field"><label>顯示密文</label><textarea data-field="ciphertext" data-level="${i}" placeholder="參加者需要提交的密文">${escapeHtml(l.ciphertext||'')}</textarea></div><div class="field"><label>提示</label><textarea data-field="hint" data-level="${i}" placeholder="可留空">${escapeHtml(l.hint||'')}</textarea></div><div class="field"><label>圖片／影片／音訊網址（可留空）</label><input data-field="mediaUrl" data-level="${i}" type="url" placeholder="https://…" value="${escapeHtml(l.mediaUrl||'')}"></div></div>`).join('');
+  $('#levels').innerHTML=levels.map((l,i)=>`<div class="level"><h3>關卡 ${['一','二','三'][i]}</h3><div class="field"><label>答案（驗證用）</label><textarea data-field="plaintext" data-level="${i}" placeholder="輸入正確答案">${escapeHtml(l.plaintext||'')}</textarea></div><div class="field"><label>顯示密文</label><textarea data-field="ciphertext" data-level="${i}" placeholder="輸入密文">${escapeHtml(l.ciphertext||'')}</textarea></div><div class="field"><label>提示</label><textarea data-field="hint" data-level="${i}" placeholder="可留空">${escapeHtml(l.hint||'')}</textarea></div><div class="field"><label>圖片／影片／音訊網址（可留空）</label><input data-field="mediaUrl" data-level="${i}" type="url" placeholder="https://…" value="${escapeHtml(l.mediaUrl||'')}"></div></div>`).join('');
  }
  function getLevels(){return [0,1,2].map(i=>{const o={};document.querySelectorAll(`[data-level="${i}"]`).forEach(el=>o[el.dataset.field]=el.value.trim());return o})}
 
@@ -629,7 +619,7 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
       <div class="contest-item">
         <div>
           <strong>${escapeHtml(c.year)} / ${escapeHtml(c.monthName||monthNames[c.month-1])} · ${escapeHtml(c.theme||'未命名主題')}</strong>
-          <span class="badge">${c.published===false?'已封存':'已發布'} · 學年 ${escapeHtml(c.schoolYear||'?')} · ${c.levels?.length||0} 階段 · <code>./${escapeHtml(c.basePath||'')}/</code></span>
+          <span class="badge">${c.published===false?'已封存':'已發布'} · 學年 ${escapeHtml(c.schoolYear||'?')} · ${c.levels?.length||0} 關 · <code>./${escapeHtml(c.basePath||'')}/</code></span>
         </div>
         <div class="actions">
           <button class="btn secondary" data-edit="${escapeHtml(keyOf(c))}">編輯</button>
@@ -653,6 +643,7 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
      $('#schoolYear').value = sy;
    }
    updatePathHint();
+   updateEndAt();
  }
 
  /* ============================================================
@@ -669,9 +660,13 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
      $('#schoolYear').value = c.schoolYear;
    }
    $('#theme').value=c.theme||'';
-   $('#endAt').value=c.endAt||'';
+   if(c.endAt){
+     $('#endAt').value=c.endAt;
+   }else{
+     updateEndAt();
+   }
    $('#googleFormUrl').value=c.googleFormUrl||'';
-   // 只預填 hint / mediaUrl / ciphertext，明文答案需重新輸入
+   // 答案欄不預填（無法從 sig 還原），需重新輸入
    const levels = (c.levels||[{},{},{}]).map(l=>({
      plaintext:'',
      ciphertext:l.ciphertext||'',
@@ -681,14 +676,13 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
    renderLevels(levels);
    updatePathHint();
    $('#editorPanel').scrollIntoView({behavior:'smooth'});
-   setStatus('#editorStatus','已載入現有資料。為保障安全，明文答案需重新輸入，重新發布會重新加密。',true);
+   setStatus('#editorStatus','已載入現有資料。為保障安全，答案需重新輸入，重新發布會重新計算。',true);
  }
 
  function clearEditor(){
    editingKey=null;
    $('#editorTitle').textContent='提交新的賽事題目';
    $('#theme').value='';
-   $('#endAt').value='';
    $('#googleFormUrl').value='';
    renderLevels();
    updateCurrent();
@@ -705,7 +699,7 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
    if(!year||!month||!theme){setStatus('#editorStatus','請填寫年份、月份及主題。');return}
    if(!schoolYear){setStatus('#editorStatus','請選擇學年（可先按 ＋ 新增）。');return}
    if(levels.some(l=>!l.plaintext||!l.ciphertext)){
-     setStatus('#editorStatus','三個階段均須填寫明文答案及顯示密文。');
+     setStatus('#editorStatus','三個關卡均須填寫答案及顯示密文。');
      return;
    }
 
@@ -715,30 +709,26 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
    const previous = contestsData.contests.find(c =>
      c.schoolYear === schoolYear && c.year === year && c.month === month
    );
-   // 防止同一年月在不編輯的情況下建立重複（跨學年）
    if(!editingKey && previous){
      setStatus('#editorStatus','該學年此月份已存在賽事，請按「編輯」修改。');
      return;
    }
 
    $('#saveBtn').disabled=true;
-   setStatus('#editorStatus','正在加密答案、寫入 GitHub…');
+   setStatus('#editorStatus','正在計算驗證資料、寫入 GitHub…');
 
    try{
-     // 1. 加密每關
      const cooked=[];
      for(const l of levels){
-       const crypt = await encryptAnswer(l.plaintext);
+       const sig = await makeSig(l.plaintext);
        cooked.push({
          ciphertext: l.ciphertext,
          hint: l.hint||'',
          mediaUrl: l.mediaUrl||'',
-         cipherHash: await sha256(l.plaintext),
-         ...crypt
+         sig
        });
      }
 
-     // 2. 寫入 ./{學年}/{月份}/lv1.json … lv3.json
      for(let i=0;i<3;i++){
        await writeFile(
          `${basePath}/lv${i+1}.json`,
@@ -747,13 +737,15 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
        );
      }
 
-     // 3. 更新索引
      const idxLevels = cooked.map(l=>({
        ciphertext: l.ciphertext,
        hint: l.hint,
        mediaUrl: l.mediaUrl,
-       cipherHash: l.cipherHash
+       sig: l.sig
      }));
+
+     let endAt = $('#endAt').value.trim();
+     if(!endAt) endAt = computeEndAt(year, month);
 
      const idxEntry = {
        schoolYear,
@@ -761,20 +753,18 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
        month,
        monthName: monthNames[month-1],
        theme,
-       endAt: $('#endAt').value.trim() || new Date(year, month-1, 1, 23, 59, 0).toISOString(),
+       endAt,
        googleFormUrl: $('#googleFormUrl').value.trim(),
        published: true,
        basePath,
        levels: idxLevels
      };
 
-     // 移除舊記錄（同一年月，任何學年）
      contestsData.contests = contestsData.contests.filter(c =>
        !(c.year===year && c.month===month)
      );
      contestsData.contests.push(idxEntry);
 
-     // 確保 schoolYear 在清單中
      if(!contestsData.schoolYears.includes(schoolYear)){
        contestsData.schoolYears.push(schoolYear);
        contestsData.schoolYears.sort();
@@ -816,7 +806,9 @@ h1{font-size:clamp(30px,4vw,46px);margin:10px 0}
  $('#newBtn').addEventListener('click',clearEditor);
  $('#addYearBtn').addEventListener('click',addSchoolYear);
  $('#removeYearBtn').addEventListener('click',removeSchoolYear);
- $('#month').addEventListener('change',updatePathHint);
+ $('#month').addEventListener('change',()=>{updatePathHint();updateEndAt();});
+ $('#year').addEventListener('input',()=>{updateEndAt();});
+ $('#year').addEventListener('change',()=>{updateEndAt();});
  $('#schoolYear').addEventListener('change',updatePathHint);
  $('#logoutBtn').addEventListener('click',()=>{
    token='';repo='';
