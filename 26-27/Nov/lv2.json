@@ -2,9 +2,5 @@
   "ciphertext": "What is \"Cryptography\"?",
   "hint": "?/?/?/?/-/---/?/?/?/?/..../?",
   "mediaUrl": "",
-  "cipherHash": "57bf661b8d7bd85c962c7ea7d180744cdd2893916ab255cffeed3c8303736eb9",
-  "encryptedAnswer": "/99KkML3q/U0EQg6HbGLTRlqS51BQub4s+7QmSmNlbWzyIdiIcPNJswUVssSmVWqO6jcOh3gDrfGRLlIiKxKJZek",
-  "iv": "+fGeNE2xXx512xMh",
-  "keyObfuscated": "LNesW2KFYRGd6ltddcxNibhGT7BJc03p0aI1GWoLXqY=",
-  "keySalt": "static-xor-v1"
+  "sig": ""
 }
