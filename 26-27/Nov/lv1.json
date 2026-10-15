@@ -2,9 +2,5 @@
   "ciphertext": "EEɹEE, ∃EEEE, EEEEW, EEEOE, ESEEE",
   "hint": "▦, ↺, ↘\n(Case Sensitive)",
   "mediaUrl": "",
-  "cipherHash": "e1db366739ac9b9db7defe74aeb85b0c386dfa2ec03fe5dc9002de9806f3da02",
-  "encryptedAnswer": "8lGH8cfRGvlXnaTYuRhCOVgDXkW7",
-  "iv": "I6UP4p2mnkywpJsv",
-  "keyObfuscated": "olqEkcWrKH42+Uop4NBs6p8DnDR2E3XKJZQB5uxjz88=",
-  "keySalt": "static-xor-v1"
+  "sig": ""
 }
