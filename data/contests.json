@@ -1,41 +1,10 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-10-15T12:41:34.556Z",
+  "updatedAt": "2026-10-15T13:46:55.924Z",
   "schoolYears": [
     "26-27"
   ],
   "contests": [
-    {
-      "schoolYear": "26-27",
-      "year": 2026,
-      "month": 10,
-      "monthName": "October",
-      "theme": "Testing",
-      "endAt": "2026-10-31T23:59:00+08:00",
-      "googleFormUrl": "",
-      "published": true,
-      "basePath": "26-27/Oct",
-      "levels": [
-        {
-          "ciphertext": "ABCDE",
-          "hint": "No.",
-          "mediaUrl": "",
-          "sig": ""
-        },
-        {
-          "ciphertext": "FFFFF",
-          "hint": "No. of F",
-          "mediaUrl": "",
-          "sig": ""
-        },
-        {
-          "ciphertext": "FFAFF",
-          "hint": "No. of F",
-          "mediaUrl": "",
-          "sig": ""
-        }
-      ]
-    },
     {
       "schoolYear": "26-27",
       "year": 2026,
@@ -64,6 +33,37 @@
           "hint": "▦, ↺, ①, ./",
           "mediaUrl": "",
           "sig": ""
+        }
+      ]
+    },
+    {
+      "schoolYear": "26-27",
+      "year": 2026,
+      "month": 10,
+      "monthName": "October",
+      "theme": "Testing",
+      "endAt": "2026-10-31T23:59:00+08:00",
+      "googleFormUrl": "",
+      "published": true,
+      "basePath": "26-27/Oct",
+      "levels": [
+        {
+          "ciphertext": "ABCDE",
+          "hint": "No.",
+          "mediaUrl": "",
+          "sig": "UD/DPGpO17TMxzb/cbS29u2WUYowqlu/Mhb/6BBFpxKdUyuKI/L2huEzZq+rPava"
+        },
+        {
+          "ciphertext": "FFFFF",
+          "hint": "No. of F",
+          "mediaUrl": "",
+          "sig": "EeFCe01NmZBOXA4J0r7aniE7L1UuM+GFly6J0MLtCnwtooOryajGwO10V6E39Zl7"
+        },
+        {
+          "ciphertext": "FFAFF",
+          "hint": "No. of F",
+          "mediaUrl": "",
+          "sig": "viF6NIptmuCenWpo9A6/YkvM+B5J3Quq0x2z//CMs947i6DfnJpPczTbceVmdsNY"
         }
       ]
     }
