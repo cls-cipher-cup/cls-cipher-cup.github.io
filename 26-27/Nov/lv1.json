@@ -1,10 +1,10 @@
 {
-  "ciphertext": "MOrSE",
-  "hint": "↘",
+  "ciphertext": "EEɹEE, ∃EEEE, EEEEW, EEEOE, ESEEE",
+  "hint": "▦, ↺, ↘\n(Case Sensitive)",
   "mediaUrl": "",
-  "cipherHash": "95cdf4548a6ac3745b8091ebbf6cb26de7f70f4cef9a768dbae28e151c375be0",
-  "encryptedAnswer": "d/zIOl2SlMynNmRd6ChO4cUyScwHLDebe9eYvZZaxuN9dh1n9w5gjw+9YUKjkK24tyfrNQ==",
-  "iv": "YUrLo8dO1RsAtl5Z",
-  "keyObfuscated": "f+U7ET7xK/GMJ3ncgFJsJ1HAArl56xLZEal+f4JR+J8=",
+  "cipherHash": "e1db366739ac9b9db7defe74aeb85b0c386dfa2ec03fe5dc9002de9806f3da02",
+  "encryptedAnswer": "8lGH8cfRGvlXnaTYuRhCOVgDXkW7",
+  "iv": "I6UP4p2mnkywpJsv",
+  "keyObfuscated": "olqEkcWrKH42+Uop4NBs6p8DnDR2E3XKJZQB5uxjz88=",
   "keySalt": "static-xor-v1"
 }
