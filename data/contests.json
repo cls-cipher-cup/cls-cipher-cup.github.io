@@ -20,19 +20,19 @@
           "ciphertext": "ABCDE",
           "hint": "No.",
           "mediaUrl": "",
-          "cipherHash": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"
+          "sig": ""
         },
         {
           "ciphertext": "FFFFF",
           "hint": "No. of F",
           "mediaUrl": "",
-          "cipherHash": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"
+          "sig": ""
         },
         {
           "ciphertext": "FFAFF",
           "hint": "No. of F",
           "mediaUrl": "",
-          "cipherHash": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
+          "sig": ""
         }
       ]
     },
@@ -51,19 +51,19 @@
           "ciphertext": "EEɹEE, ∃EEEE, EEEEW, EEEOE, ESEEE",
           "hint": "▦, ↺, ↘\n(Case Sensitive)",
           "mediaUrl": "",
-          "cipherHash": "e1db366739ac9b9db7defe74aeb85b0c386dfa2ec03fe5dc9002de9806f3da02"
+          "sig": ""
         },
         {
           "ciphertext": "What is \"Cryptography\"?",
           "hint": "?/?/?/?/-/---/?/?/?/?/..../?",
           "mediaUrl": "",
-          "cipherHash": "57bf661b8d7bd85c962c7ea7d180744cdd2893916ab255cffeed3c8303736eb9"
+          "sig": ""
         },
         {
           "ciphertext": "5∃∃∃∃, ∃4∃∃∃, ∃∃3∃∃, ∃∃∃2∃, ∃∃∃∃1",
           "hint": "▦, ↺, ①, ./",
           "mediaUrl": "",
-          "cipherHash": "6f67e72075d8fd19ec82e3c7141ac213e2b98ead66aee4944f9fb78b9e05f76b"
+          "sig": ""
         }
       ]
     }
