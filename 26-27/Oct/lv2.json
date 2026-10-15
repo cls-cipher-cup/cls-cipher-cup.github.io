@@ -1,10 +1,10 @@
 {
-  "ciphertext": "5",
+  "ciphertext": "FFFFF",
   "hint": "No. of F",
   "mediaUrl": "",
-  "cipherHash": "ca292b0aaa785189560fb8d6c7ed76614cd1671dd4cc1369579279b8627aedfa",
-  "encryptedAnswer": "WJix9UNUd6qbAMtAjsqDQFTAjXW+",
-  "iv": "klPwXAbDnSkQzHS5",
-  "keyObfuscated": "NM8vVmB9LC7J3mSjDtOVeLPZDI5mOPxDAij/VVRH3JM=",
+  "cipherHash": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+  "encryptedAnswer": "5Ro6ARckYhGxF56iLvS2mfo=",
+  "iv": "EMMtjWXTUEYbvEL4",
+  "keyObfuscated": "Nxo1bv+Ub1jTBQXKbTHTyTrfYz1RiSZxIfQUO2hQM1E=",
   "keySalt": "static-xor-v1"
 }
