@@ -1,41 +1,10 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-10-15T13:46:55.924Z",
+  "updatedAt": "2026-10-15T13:49:33.102Z",
   "schoolYears": [
     "26-27"
   ],
   "contests": [
-    {
-      "schoolYear": "26-27",
-      "year": 2026,
-      "month": 11,
-      "monthName": "November",
-      "theme": "./rEVErSE/.",
-      "endAt": "2026-11-30T23:59:00+08:00",
-      "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSf5-8oTZYHaEBDA5qiTAHxyTN80O7dL210KNNj-sj_3r4AXAQ/viewform",
-      "published": true,
-      "basePath": "26-27/Nov",
-      "levels": [
-        {
-          "ciphertext": "EEɹEE, ∃EEEE, EEEEW, EEEOE, ESEEE",
-          "hint": "▦, ↺, ↘\n(Case Sensitive)",
-          "mediaUrl": "",
-          "sig": ""
-        },
-        {
-          "ciphertext": "What is \"Cryptography\"?",
-          "hint": "?/?/?/?/-/---/?/?/?/?/..../?",
-          "mediaUrl": "",
-          "sig": ""
-        },
-        {
-          "ciphertext": "5∃∃∃∃, ∃4∃∃∃, ∃∃3∃∃, ∃∃∃2∃, ∃∃∃∃1",
-          "hint": "▦, ↺, ①, ./",
-          "mediaUrl": "",
-          "sig": ""
-        }
-      ]
-    },
     {
       "schoolYear": "26-27",
       "year": 2026,
@@ -64,6 +33,37 @@
           "hint": "No. of F",
           "mediaUrl": "",
           "sig": "viF6NIptmuCenWpo9A6/YkvM+B5J3Quq0x2z//CMs947i6DfnJpPczTbceVmdsNY"
+        }
+      ]
+    },
+    {
+      "schoolYear": "26-27",
+      "year": 2026,
+      "month": 11,
+      "monthName": "November",
+      "theme": "./rEVErSE/.",
+      "endAt": "2026-11-30T23:59:00+08:00",
+      "googleFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSf5-8oTZYHaEBDA5qiTAHxyTN80O7dL210KNNj-sj_3r4AXAQ/viewform",
+      "published": true,
+      "basePath": "26-27/Nov",
+      "levels": [
+        {
+          "ciphertext": "EEɹEE, ∃EEEE, EEEEW, EEEOE, ESEEE",
+          "hint": "▦, ↺, ↘\n(Case Sensitive)",
+          "mediaUrl": "",
+          "sig": "/NDck/1BQkLSenPXk4egjUo0KWVhFL3SoVZrAjJqO5GovMcQ9IrH6SOslga3LaUx"
+        },
+        {
+          "ciphertext": "What is \"Cryptography\"?",
+          "hint": "?/?/?/?/-/---/?/?/?/?/..../?",
+          "mediaUrl": "",
+          "sig": "Ajk075QD/BGRLTY4gbPh4mjTpDkASs6tuV36G0ucBfrQyUcIrfqGxfxFQlOMxlzS"
+        },
+        {
+          "ciphertext": "5∃∃∃∃, ∃4∃∃∃, ∃∃3∃∃, ∃∃∃2∃, ∃∃∃∃1",
+          "hint": "▦, ↺, ①, ./\nNumbers are the index.",
+          "mediaUrl": "",
+          "sig": "wmWbxlE91aArAODn1cK/lbf0Ggob9Eu4pvmWGOurkCzkzjnkBZOu5ccWOvMW87ry"
         }
       ]
     }
