@@ -2,9 +2,5 @@
   "ciphertext": "FFFFF",
   "hint": "No. of F",
   "mediaUrl": "",
-  "cipherHash": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
-  "encryptedAnswer": "7BqeBIXujix2oBs+QTfyyc0=",
-  "iv": "9brZxWQPzs2YOAm3",
-  "keyObfuscated": "zKvFUjGJbt/Ysb5oTDiTCbHYrjsRQgBjh0aBQ0yk24c=",
-  "keySalt": "static-xor-v1"
+  "sig": ""
 }
