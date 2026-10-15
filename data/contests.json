@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-10-14T14:26:23.282Z",
+  "updatedAt": "2026-10-15T06:35:27.956Z",
   "schoolYears": [
     "26-27"
   ],
@@ -48,22 +48,22 @@
       "basePath": "26-27/Oct",
       "levels": [
         {
-          "ciphertext": "5",
+          "ciphertext": "ABCDE",
           "hint": "No.",
           "mediaUrl": "",
-          "cipherHash": "f0393febe8baaa55e32f7be2a7cc180bf34e52137d99e056c817a9c07b8f239a"
+          "cipherHash": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"
         },
         {
-          "ciphertext": "5",
+          "ciphertext": "FFFFF",
           "hint": "No. of F",
           "mediaUrl": "",
-          "cipherHash": "ca292b0aaa785189560fb8d6c7ed76614cd1671dd4cc1369579279b8627aedfa"
+          "cipherHash": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"
         },
         {
-          "ciphertext": "3",
+          "ciphertext": "FFAFF",
           "hint": "No. of F",
           "mediaUrl": "",
-          "cipherHash": "a16e084741ff5a6415cb1a5ede3216ab6b0e753a4522091308104bf07328847a"
+          "cipherHash": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
         }
       ]
     }
