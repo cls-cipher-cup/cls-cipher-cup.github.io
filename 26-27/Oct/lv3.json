@@ -1,6 +1,6 @@
 {
-  "ciphertext": "FFAFF",
-  "hint": "No. of F",
+  "ciphertext": "(1)1(2)1(3) (1)1(2)1(1)1 (1)1(2)11(2) (1)1(2)11(2) (1)1(2)1111 (2)1(5) (1)1(1)1(1)1(2)111 (1)1(2)1111 (1)1(1)1(2)1(1)1(2) (1)1(2)11(2) (1)1(2)1(2)1 (2)1(4)1",
+  "hint": "1: This ciphertext uses only half of the typical RLE — only one of the [REDACTED] is compressed.; 2: After expanding, how many bits should each character be?",
   "mediaUrl": "",
-  "sig": "viF6NIptmuCenWpo9A6/YkvM+B5J3Quq0x2z//CMs947i6DfnJpPczTbceVmdsNY"
+  "sig": "uMd6mTlP65VVOzNwAih6NmelBDMrKesiV5sIxdwWiaxzFre9NFKmyYyAybNvhKs9"
 }
