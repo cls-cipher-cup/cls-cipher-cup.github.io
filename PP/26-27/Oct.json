@@ -1,0 +1,18 @@
+{
+  "theme": "Sample Challenge",
+  "year": 2026,
+  "levels": [
+    {
+      "text": "密文：ROVVY GYBVN!\n提示：C+10\n\n「C」指代 Caesar Cipher（凱撒密碼），「+10」表示每個字母向右移位 10 位。\n將 ROVVY GYBVN! 逐字母右移 10 位：\n\nR → H\nO → E\nV → L\nV → L\nY → O\n（空格不變）\nG → W\nY → O\nB → R\nV → L\nN → D\n（！不變）\n\n還原後得到：HELLO WORLD!",
+      "images": []
+    },
+    {
+      "text": "密文：48 45 4C 4C 4F 20 57 4F 52 4C 44 21\n提示：███ is a character encoding standard for representing a total of 128 code points.\n\n128 個碼點是 ASCII 的特徵，因此提示指向 ASCII 編碼。\n將每組十六進位轉為對應字元：\n\n48 → H\n45 → E\n4C → L\n4C → L\n4F → O\n20 → （空格）\n57 → W\n4F → O\n52 → R\n4C → L\n44 → D\n21 → !\n\n還原後得到：HELLO WORLD!",
+      "images": []
+    },
+    {
+      "text": "密文：(1)1(2)1(3) (1)1(3)1(1)1 (1)1(2)11(2) (1)1(2)11(2) (1)1(2)1111 (2)1(5) (1)1(1)1(1)111 (1)1(2)1111 (1)1(1)1(2)1(1) (1)1(2)11(2) (1)1(3)1(2) (2)1(4)1\n\n提示：This ciphertext uses only half of the typical RLE — only one of the [REDACTED] is compressed. After expanding, how many bits should each character be?\n\n先看提示，「展開之後，每個字元應該是多少 bit」，暗示展開後的位元串裡，有些字元的長度不足 8 位。\n\n再觀察密文的結構，每一組都由數字 1 和括號裡的數字組成，例如 (1)1(2)1(3)。\n如果把括號裡的數字和實際出現的 1 的個數加起來，會發現每組剛好是 8：\n(1)1(2)1(3) 是 1+1+2+1+3 = 8\n這說明括號裡的數字代表某些被壓縮的東西，而這個東西在密文裡完全沒有出現。\n密文裡只有 1，沒有 0，所以被壓縮的就是連續的 0。\n\n也就是說，(n) 代表連續 n 個 0，而 1 保持不變。把每一組展開後，得到：\n01001000 01000101 01001100 01001100 01001111 00100000 01010111 01001111 01010010 01001100 01000100 00100001\n\n由 ASCII 的 128 個碼點可知每個字元是 8 bit，所以把展開後的位元串按 8 位一組切分，再轉成 ASCII，得到：\nH、E、L、L、O、空格、W、O、R、L、D、!\n最終答案為 HELLO WORLD!。",
+      "images": []
+    }
+  ]
+}
