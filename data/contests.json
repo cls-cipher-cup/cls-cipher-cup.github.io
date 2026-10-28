@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-10-28T14:44:28.915Z",
+  "updatedAt": "2026-10-28T14:58:08.351Z",
   "schoolYears": [
     "26-27"
   ],
@@ -51,19 +51,19 @@
           "ciphertext": "ROVVY GYBVN!",
           "hint": "C+10",
           "mediaUrl": "",
-          "sig": "fGRSuXIbzwdhoZ7wHhSOi/hc1Jzo0xRFN9BeBEoE/7e8UrteZR3Bymz66fkUYABu"
+          "sig": "0NEPz+l+n1sVdJMygW7vCFOLsgefNj1A8bze4K3GpeY+OAICUxYqHI67ovSt2QhK"
         },
         {
           "ciphertext": "48 45 4C 4C 4F 20 57 4F 52 4C 44 21",
           "hint": "███ is a character encoding standard for representing a total of 128 code points.",
           "mediaUrl": "",
-          "sig": "erBM0+3NoRd7kOJEb9dpiJUXMNLyrhOreYLYI2AV1mQ/B1QkXHJWK/YyJ3STSEpa"
+          "sig": "CNbBpvLEJI7ARTCX4sws/LOpepXpQybYZTz6+FKjVs89z2OVMOYPwNuNmeIGwXiD"
         },
         {
-          "ciphertext": "(1)1(2)1(3) (1)1(2)1(1)1 (1)1(2)11(2) (1)1(2)11(2) (1)1(2)1111 (2)1(5) (1)1(1)1(1)1(2)111 (1)1(2)1111 (1)1(1)1(2)1(1)1(2) (1)1(2)11(2) (1)1(2)1(2)1 (2)1(4)1",
+          "ciphertext": "(1)1(2)1(3) (1)1(3)1(1)1 (1)1(2)11(2) (1)1(2)11(2) (1)1(2)1111 (2)1(5) (1)1(1)1(1)111 (1)1(2)1111 (1)1(1)1(2)1(1) (1)1(2)11(2) (1)1(3)1(2) (2)1(4)1",
           "hint": "1: This ciphertext uses only half of the typical RLE — only one of the [REDACTED] is compressed.; 2: After expanding, how many bits should each character be?",
           "mediaUrl": "",
-          "sig": "uMd6mTlP65VVOzNwAih6NmelBDMrKesiV5sIxdwWiaxzFre9NFKmyYyAybNvhKs9"
+          "sig": "PU9Qj8OwaYXw212eseNonEN0+uZ5gvxU+GgBT0lMMf8fTDG22Yf4reiwxUr6RW0o"
         }
       ]
     }
