@@ -1,6 +1,6 @@
 {
-  "ciphertext": "(1)1(2)1(3) (1)1(2)1(1)1 (1)1(2)11(2) (1)1(2)11(2) (1)1(2)1111 (2)1(5) (1)1(1)1(1)1(2)111 (1)1(2)1111 (1)1(1)1(2)1(1)1(2) (1)1(2)11(2) (1)1(2)1(2)1 (2)1(4)1",
+  "ciphertext": "(1)1(2)1(3) (1)1(3)1(1)1 (1)1(2)11(2) (1)1(2)11(2) (1)1(2)1111 (2)1(5) (1)1(1)1(1)111 (1)1(2)1111 (1)1(1)1(2)1(1) (1)1(2)11(2) (1)1(3)1(2) (2)1(4)1",
   "hint": "1: This ciphertext uses only half of the typical RLE — only one of the [REDACTED] is compressed.; 2: After expanding, how many bits should each character be?",
   "mediaUrl": "",
-  "sig": "uMd6mTlP65VVOzNwAih6NmelBDMrKesiV5sIxdwWiaxzFre9NFKmyYyAybNvhKs9"
+  "sig": "PU9Qj8OwaYXw212eseNonEN0+uZ5gvxU+GgBT0lMMf8fTDG22Yf4reiwxUr6RW0o"
 }
