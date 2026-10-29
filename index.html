@@ -458,6 +458,77 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
       content: "";
       box-shadow: 0 0 9px rgba(122, 186, 255, .65);
     }
+        .nav-menu-btn {
+      display: none;
+      flex: 0 0 auto;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      place-items: center;
+      border: 1px solid rgba(210, 229, 255, .18);
+      border-radius: 10px;
+      background: rgba(23, 35, 58, .55);
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .nav-menu-btn:hover {
+      background: rgba(40, 62, 102, .7);
+      border-color: rgba(160, 196, 238, .4);
+    }
+    .nav-menu-btn img {
+      display: block;
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* 摺疊模式：nav-links 變成下拉懸浮 */
+    .site-nav.nav-collapsed .nav-links {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2px;
+      min-width: 180px;
+      padding: 8px;
+      border: 1px solid rgba(210, 229, 255, .13);
+      border-radius: 14px;
+      background: rgba(8, 12, 21, .95);
+      box-shadow: 0 12px 42px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .05);
+      -webkit-backdrop-filter: blur(24px) saturate(145%);
+      backdrop-filter: blur(24px) saturate(145%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-6px);
+      transition: opacity .2s ease, transform .2s ease, visibility .2s;
+    }
+    .site-nav.nav-collapsed .nav-links.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .site-nav.nav-collapsed .nav-links a {
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #c4d0e7;
+    }
+    .site-nav.nav-collapsed .nav-links a:hover,
+    .site-nav.nav-collapsed .nav-links a.active {
+      background: rgba(122, 186, 255, .1);
+      color: #f4f8ff;
+    }
+    .site-nav.nav-collapsed .nav-links a.active::after {
+      display: none;
+    }
+    .site-nav.nav-collapsed .nav-menu-btn {
+      display: grid;
+    }
     .admin-link { display: none !important; }
     .admin-link.show { display: inline !important; }
 
@@ -644,15 +715,20 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
     .pp-year > summary::before { content: "▸ "; color: #78b7f7; }
     .pp-year[open] > summary::before { content: "▾ "; }
 
-    .pp-month {
-      padding: 18px 0;
+        .pp-month {
       border-top: 1px solid rgba(159,188,225,.1);
     }
-    .pp-month-title {
-      margin: 0 0 4px;
+    .pp-month > summary {
+      cursor: pointer;
+      padding: 14px 0 10px;
       font-size: 16px;
       color: #cfe2fb;
+      font-weight: 600;
+      list-style: none;
     }
+    .pp-month > summary::-webkit-details-marker { display: none; }
+    .pp-month > summary::before { content: "▸ "; color: #78b7f7; }
+    .pp-month[open] > summary::before { content: "▾ "; }
     .pp-theme {
       margin: 0 0 14px;
       color: #9baac0;
@@ -732,12 +808,17 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
     <button class="nav-brand" id="navHome" type="button" aria-label="返回首頁">
       <img src="./img/logo/Cipher Cup Horizontal.png" alt="CLS Cipher Cup" />
     </button>
-    <div class="nav-links">
+    <div class="nav-links" id="navLinks">
       <a href="#overview" data-section="overview">規則簡介</a>
       <a href="#past-puzzles" data-section="past-puzzles">歷屆題目</a>
-      <a href="#about" data-section="about">關於解謎杯</a>
+      <a href="#about" data-section="about">關於解密杯</a>
       <a href="./admin.html" id="adminNav" class="admin-link">管理面板</a>
     </div>
+  
+
+    <button class="nav-menu-btn" id="navMenuBtn" type="button" aria-label="展開選單" aria-expanded="false">
+      <img src="./img/menu.png" alt="" />
+    </button>
   </nav>
 
   <main>
@@ -754,7 +835,7 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
           <span class="meta-month" id="monthLabel">載入賽事資料中…</span>
         </p>
 
-        <h1 class="cipher-title" id="stageLabel">階段一</h1>
+        <h1 class="cipher-title" id="stageLabel">密文一</h1>
 
         <section class="clue-panel hidden" id="cluePanel" aria-live="polite">
           <p class="clue-label" id="clueLabel">階段一密文</p>
@@ -803,8 +884,8 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
           <div class="progress-head">
             <div>
               <p class="section-kicker">CURRENT MONTH</p>
-              <h2 class="progress-title" id="progressTitle">本月解謎進度</h2>
-              <p class="progress-subtitle" id="monthDescription">每月一日開啟新挑戰，月底公布謎底。</p>
+              <h2 class="progress-title" id="progressTitle">本月解密進度</h2>
+              <p class="progress-subtitle" id="monthDescription">每月一日開啟新挑戰，月底公布明文謎底。</p>
             </div>
             <div class="progress-percent" id="progressPercent">—%</div>
           </div>
@@ -829,46 +910,46 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
 
         <section class="rules-heading">
           <p class="section-kicker">HOW TO PLAY</p>
-          <h1 class="section-title" id="overviewTitle">解開線索，探索未知。</h1>
+          <h1 class="section-title" id="overviewTitle">直至未知之境</h1>
           <p class="section-lead">
-            CLS Cipher Cup 是由 IT 學會舉辦的月度解謎活動。每個月，你都需要從文字、圖片、影片或文章中尋找隱藏線索，逐步破解三組密文，找出當月謎底。
+            CLS Cipher Cup 是由 IT 學會舉辦的月度解密活動。每個月，你都需要從文字、圖片、影片或文章中尋找隱藏線索，逐步破解三組密文，找出當月明文。
           </p>
         </section>
 
         <div class="rules-list">
           <article class="rule-row">
-            <span class="rule-number">01 / 01</span>
+            <span class="rule-number">01</span>
             <div>
-              <h3>接收每月線索</h3>
-              <p>每月一日，IT 學會會透過電郵發布第一道謎題。仔細觀察內容，找出隱藏其中的第一組密文。</p>
+              <h3>破解密文一</h3>
+              <p>每月一日，IT 學會會透過電郵發布第一道謎題。仔細觀察內容，參考提示，找出隱藏其中的第一組明文。</p>
             </div>
           </article>
           <article class="rule-row">
-            <span class="rule-number">02 / 02</span>
+            <span class="rule-number">02</span>
             <div>
               <h3>逐層破解密文</h3>
-              <p>將密文輸入首頁的指定欄位，通過驗證後即可取得下一階段線索。謎題共設三個層次，各階段可能互相關聯。</p>
+              <p>將獲得的明文輸入首頁的指定欄位，通過驗證後即可取得下一階段線索。謎題共設三個層次，各階段可能互相關聯。</p>
             </div>
           </article>
           <article class="rule-row">
-            <span class="rule-number">03 / 03</span>
+            <span class="rule-number">03</span>
             <div>
-              <h3>提交當月謎底</h3>
-              <p>成功在Google Form提交正確的三組密文後，即完成當月挑戰，並按排名獲得全年積分。</p>
+              <h3>提交當月明文</h3>
+              <p>成功在Google Form提交正確的三組明文後，即完成當月挑戰，並按排名獲得全年積分。</p>
             </div>
           </article>
           <article class="rule-row">
-            <span class="rule-number">04 / 04</span>
+            <span class="rule-number">04</span>
             <div>
               <h3>月度獎勵與全年排名</h3>
               <p>每月第一名可獲得證書、當月限定 3D 打印立牌及獎品。每月積分會累積至全年排行榜，年度總排名頭四名均可獲得年度獎勵。</p>
             </div>
           </article>
           <article class="rule-row">
-            <span class="rule-number">05 / 05</span>
+            <span class="rule-number">05</span>
             <div>
               <h3>積分制度</h3>
-              <p>月度第一至第九名或以後的積分依次為 25、18、15、12、10、8、6、4、1 分。第九名或以後的參加者須成功提交正確第三組密文，方可獲得 1 分。</p>
+              <p>月度第一至第八名或以後的積分依次為 25、18、15、12、10、8、6、4分。第九名或以後的參加者如成功提交正確第三組密文，均可獲得 1 分。</p>
             </div>
           </article>
         </div>
@@ -877,9 +958,9 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
 
     <section class="page" id="past-puzzles" aria-labelledby="pastTitle">
       <div class="content-wrap">
-        <p class="section-kicker">ARCHIVE</p>
+        <p class="section-kicker">PAST PROBLEMS</p>
         <h2 class="section-title" id="pastTitle">歷屆題目</h2>
-        <p class="section-lead">重溫過往月份的挑戰與解謎思路。</p>
+        <p class="section-lead">重溫過往月份的挑戰與解密思路。</p>
         <div class="empty-state" id="archiveEmpty">無法獲取歷屆題目。<br /></div>
         <div id="archiveList"></div>
       </div>
@@ -887,9 +968,9 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
 
     <section class="page" id="about" aria-labelledby="aboutTitle">
       <div class="content-wrap">
-        <p class="section-kicker">ABOUT THE CUP</p>
+        <p class="section-kicker">ABOUT CIPHER CUP</p>
         <h2 class="section-title" id="aboutTitle">關於 CLS Cipher Cup</h2>
-        <p class="section-lead">CLS Cipher Cup 由 IT 學會策劃，透過每月更新的多層次解謎挑戰，結合密碼學、資訊分析與邏輯推理，鼓勵同學以不同角度探索資訊科技。</p>
+        <p class="section-lead">CLS Cipher Cup 由 IT 學會策劃，透過每月更新的多層次解密挑戰，結合密碼學、資訊分析與邏輯推理，鼓勵同學以不同角度探索資訊科技。</p>
         <p class="section-lead">2026 - 2027 學年出題人：5A 游博謙</p>
         <p class="section-lead">本學會鄭重承諾，除上述名單所列人員外，絕無任何外部人士得於試題公布前知悉其內容。同時，上述所有人員均不會參與當年度的全年排名。
 </p>
@@ -1051,8 +1132,71 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
         });
       });
 
+            const navEl = $("siteNav");
+      const navLinksEl = $("navLinks");
+      const navMenuBtn = $("navMenuBtn");
+
+      function updateNavLayout() {
+        if (!navEl || !navLinksEl || !navMenuBtn) return;
+
+        // 先回到非摺疊狀態測量
+        navEl.classList.remove("nav-collapsed");
+        navLinksEl.classList.remove("open");
+        navMenuBtn.setAttribute("aria-expanded", "false");
+
+        // 等一幀讓樣式生效再量
+        requestAnimationFrame(() => {
+          const navRect = navEl.getBoundingClientRect();
+          const brandRect = navEl.querySelector(".nav-brand").getBoundingClientRect();
+          const linksRect = navLinksEl.getBoundingClientRect();
+
+          const navStyle = getComputedStyle(navEl);
+          const padL = parseFloat(navStyle.paddingLeft) || 0;
+          const padR = parseFloat(navStyle.paddingRight) || 0;
+          const gap  = parseFloat(navStyle.gap) || 20;
+
+          const needed = brandRect.width + linksRect.width + gap * 2 + padL + padR;
+
+          if (needed > navRect.width) {
+            navEl.classList.add("nav-collapsed");
+          }
+        });
+      }
+
+      navMenuBtn?.addEventListener("click", event => {
+        event.stopPropagation();
+        const open = navLinksEl.classList.toggle("open");
+        navMenuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+
+      document.addEventListener("click", event => {
+        if (!navEl.contains(event.target)) {
+          navLinksEl.classList.remove("open");
+          navMenuBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      // 點擊選單裡的連結後自動收起
+      navLinksEl?.querySelectorAll("a").forEach(a => {
+        a.addEventListener("click", () => {
+          navLinksEl.classList.remove("open");
+          navMenuBtn.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      // 視窗大小改變時重新偵測
+      let navResizeTimer = 0;
+      window.addEventListener("resize", () => {
+        clearTimeout(navResizeTimer);
+        navResizeTimer = setTimeout(updateNavLayout, 120);
+      }, { passive: true });
+
+      // 初始偵測
+      updateNavLayout();
+
       function refreshAdminNav() {
         adminNav?.classList.toggle("show", getStoredFlag("ccc_admin_session") === "1");
+        updateNavLayout();
       }
       refreshAdminNav();
       window.addEventListener("focus", refreshAdminNav);
@@ -1152,7 +1296,7 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
       }
       function setStageLabel(level) {
         if (level === 4) {
-          stageLabelEl.textContent = "已完成";
+          stageLabelEl.textContent = "✔ AC 3/3";
         } else {
           stageLabelEl.textContent = STAGE_LABELS[level - 1] || "階段";
         }
@@ -1314,7 +1458,7 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
         }
       }
 
-            async function renderArchive() {
+      async function renderArchive() {
         const host = $("archiveList");
         const empty = $("archiveEmpty");
         if (!host) return;
@@ -1366,11 +1510,11 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
             }).join("");
 
             monthBlocks.push(`
-              <article class="pp-month">
-                <h3 class="pp-month-title">${escapeHtml(short)} · ${escapeHtml(String(year))}</h3>
+              <details class="pp-month">
+                <summary>${escapeHtml(short)} · ${escapeHtml(String(year))}</summary>
                 <p class="pp-theme">${escapeHtml(theme)}</p>
                 ${levelsHtml}
-              </article>
+              </details>
             `);
           }
 
@@ -1444,7 +1588,7 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
             setStatus(`正確！已解鎖${STAGE_LABELS[currentLevel - 1]}密文。`, "ok");
           } catch (err) {
             cluePanel.classList.add("hidden");
-            setStatus("正確，但無法載入下一階段資料，請重新整理頁面。", "warn");
+            setStatus("正確，但無法載入下一階段資料，請檢查網絡設定。", "warn");
           }
         } else {
           currentLevel = 4;
@@ -1493,7 +1637,7 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
         $("progressFill").style.width = `${ratio * 100}%`;
         $("progressPercent").textContent = `${percent}%`;
         $("progressTrack").setAttribute("aria-valuenow", String(percent));
-        $("progressTitle").textContent = `${year} 年 ${month + 1} 月解謎進度`;
+        $("progressTitle").textContent = `${year} 年 ${month + 1} 月解密進度`;
         $("monthDescription").textContent = contest
           ? `本月主題：${contest.theme || "未設定"} · 每月一日開啟新挑戰`
           : "每月一日開啟新挑戰，月底公布謎底。";
