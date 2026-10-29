@@ -469,6 +469,32 @@ You don't know the API key anyway lol. ☜(ﾟヮﾟ☜)
     </section>
     <div id="dashboard" class="hidden">
       <section class="panel"><h2>賽事概覽</h2><div class="row"><div class="mini"><div class="badge">本月倒數</div><h3 id="currentMonth">—</h3><p class="muted" id="countdown">—</p></div><div class="mini"><div class="badge">儲存庫</div><h3 id="repoLabel">—</h3><p class="muted">發布或更新後，GitHub Pages 需要一段時間部署。</p></div></div><div class="status" id="globalStatus"></div></section>
+      <section class="panel" id="standingsPanel">
+        <h2>更新排行榜</h2>
+        <p class="muted">上傳排行榜圖片連結至 <code>{學年}/standings.json</code>。前台會顯示最後更新時間。</p>
+        <div class="row">
+          <div class="field">
+            <label for="stSchoolYear">學年</label>
+            <select id="stSchoolYear"></select>
+          </div>
+          <div class="field">
+            <label for="stType">類型</label>
+            <select id="stType">
+              <option value="monthly">月度排名</option>
+              <option value="yearly">全年排名</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="stImageUrl">圖片網址</label>
+          <input id="stImageUrl" type="url" placeholder="https://.../image.png">
+        </div>
+        <div class="actions">
+          <button class="btn" id="stSaveBtn" type="button">發布排行榜</button>
+          <button class="btn secondary" id="stReloadBtn" type="button">重新讀取</button>
+        </div>
+        <p class="status" id="stStatus" role="status"></p>
+      </section>
       <section class="panel"><h2>已建立的賽事</h2><p class="muted">只列出已發布的賽事；若月份之間有空缺，主頁會顯示「本月暫無賽事安排」。</p><div id="contestList"></div></section>
       <section class="panel" id="editorPanel"><h2 id="editorTitle">提交新的賽事題目</h2>
       <div class="row">
@@ -923,6 +949,7 @@ You don't know the API key anyway lol. ☜(ﾟヮﾟ☜)
       renderContestList();
       updateCurrent();
       renderPPYears();
+      renderStandingsYears();
     }
 
     async function writeIndex(){
@@ -1295,7 +1322,86 @@ You don't know the API key anyway lol. ☜(ﾟヮﾟ☜)
           .join('');
         renderPPContests();
       }
+      /* ============================================================
+          排行榜更新
+      ============================================================ */
+      let currentStandings = {};
 
+      function renderStandingsYears() {
+        const sel = $('#stSchoolYear');
+        if (!sel) return;
+        sel.innerHTML = contestsData.schoolYears
+          .map(sy => `<option value="${escapeHtml(sy)}">${escapeHtml(sy)}</option>`)
+          .join('');
+        loadCurrentStandings();
+      }
+
+      async function loadCurrentStandings() {
+        const sy = $('#stSchoolYear').value;
+        if (!sy) return;
+        $('#stStatus').textContent = '讀取中…';
+        $('#stStatus').style.color = '#9cc4ee';
+        try {
+          const file = await readFile(`${sy}/standings.json`);
+          if (file) currentStandings = JSON.parse(file.text);
+          else currentStandings = {};
+          $('#stStatus').textContent = '';
+        } catch {
+          currentStandings = {};
+          $('#stStatus').textContent = '';
+        }
+        const type = $('#stType').value;
+        const entry = currentStandings[type];
+        $('#stImageUrl').value = entry?.imageUrl || '';
+      }
+
+      async function saveStandings() {
+        const sy = $('#stSchoolYear').value;
+        const type = $('#stType').value;
+        const url = $('#stImageUrl').value.trim();
+        if (!sy) { setStatus('#stStatus', '請先選擇學年。'); return; }
+        if (!url) { setStatus('#stStatus', '請輸入圖片網址。'); return; }
+        if (!/^https?:\/\//i.test(url)) { setStatus('#stStatus', '圖片網址無效。'); return; }
+
+        // 重新讀最新檔案，避免覆蓋其他人的改動
+        try {
+          const file = await readFile(`${sy}/standings.json`);
+          if (file) currentStandings = JSON.parse(file.text);
+          else currentStandings = {};
+        } catch {}
+
+        currentStandings[type] = {
+          imageUrl: url,
+          updatedAt: new Date().toISOString()
+        };
+
+        $('#stSaveBtn').disabled = true;
+        setStatus('#stStatus', '正在寫入 GitHub…');
+
+        try {
+          await writeFile(
+            `${sy}/standings.json`,
+            JSON.stringify(currentStandings, null, 2),
+            `Update standings ${sy}`
+          );
+          setStatus('#stStatus', `已更新 ${sy} 的${type === 'monthly' ? '月度' : '全年'}排名。`, true);
+        } catch (e) {
+          setStatus('#stStatus', `更新失敗：${e.message}`);
+        } finally {
+          $('#stSaveBtn').disabled = false;
+        }
+      }
+
+      $('#stSchoolYear').addEventListener('change', () => {
+        currentStandings = {};
+        loadCurrentStandings();
+      });
+      $('#stType').addEventListener('change', () => {
+        const entry = currentStandings[$('#stType').value];
+        $('#stImageUrl').value = entry?.imageUrl || '';
+      });
+      $('#stSaveBtn').addEventListener('click', saveStandings);
+      $('#stReloadBtn').addEventListener('click', loadCurrentStandings);
       function renderPPContests() {
         const sy = $('#ppSchoolYear').value;
         const sel = $('#ppContest');
