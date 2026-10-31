@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-HK">
 <!--
 🚨 !!STOP!! 🚨
 Finding the admin panel is truly amazing. (＃°Д°)
@@ -1412,6 +1412,7 @@ You don't know the API key anyway lol. ☜(ﾟヮﾟ☜)
           `<option value="${c.year}-${c.month}">${escapeHtml(c.year)} / ${escapeHtml(c.monthName || c.month)} · ${escapeHtml(c.theme || '')}</option>`
         ).join('');
         fillPPTheme();
+        loadExistingPP();
       }
 
       function fillPPTheme() {
@@ -1425,6 +1426,39 @@ You don't know the API key anyway lol. ☜(ﾟヮﾟ☜)
         $('#ppTheme').value = c?.theme || '';
       }
 
+      async function loadExistingPP() {
+        const sy = $('#ppSchoolYear').value;
+        const val = $('#ppContest').value;
+        if (!sy || !val) return;
+
+        const [year, month] = val.split('-').map(Number);
+        const short = PP_MONTH_SHORT[month - 1];
+        if (!short) return;
+
+        // 先清空
+        [0,1,2].forEach(i => {
+          const textEl = document.querySelector(`[data-pp="text"][data-level="${i}"]`);
+          const imgEl  = document.querySelector(`[data-pp="images"][data-level="${i}"]`);
+          if (textEl) textEl.value = '';
+          if (imgEl)  imgEl.value = '';
+        });
+
+        try {
+          const file = await readFile(`PP/${sy}/${short}.json`);
+          if (!file) return;
+          const data = JSON.parse(file.text);
+          (data.levels || []).forEach((lv, i) => {
+            const textEl = document.querySelector(`[data-pp="text"][data-level="${i}"]`);
+            const imgEl  = document.querySelector(`[data-pp="images"][data-level="${i}"]`);
+            if (textEl) textEl.value = lv.text || '';
+            if (imgEl)  imgEl.value = (lv.images || []).join('\n');
+          });
+          if (data.theme) $('#ppTheme').value = data.theme;
+          setStatus('#ppStatus', `已載入 ${sy}/${short}.json。`, true);
+        } catch (e) {
+          setStatus('#ppStatus', `讀取失敗：${e.message}`);
+        }
+      }
       function getPPLevels() {
         return [0,1,2].map(i => {
           const text = document.querySelector(`[data-pp="text"][data-level="${i}"]`)?.value.trim() || '';
@@ -1483,7 +1517,10 @@ You don't know the API key anyway lol. ☜(ﾟヮﾟ☜)
 
       $('#ppSaveBtn').addEventListener('click', savePP);
       $('#ppSchoolYear').addEventListener('change', () => { renderPPContests(); });
-      $('#ppContest').addEventListener('change', fillPPTheme);
+      $('#ppContest').addEventListener('change', () => {
+        fillPPTheme();
+        loadExistingPP();
+      });
 
       renderPPLevels();
     async function toggleArchive(k){
