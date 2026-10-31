@@ -688,7 +688,7 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
       font-size: 14px;
       line-height: 1.8;
     }
-    #archiveList p {
+    #archiveList > p {
       margin: 10px 0 0;
       padding: 14px 18px;
       border: 1px solid rgba(159, 188, 225, .12);
@@ -1346,9 +1346,17 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
         progressPanel.classList.remove("hidden");
         countdownWrap.classList.remove("hidden");
 
-        currentLevel = Number(sessionStorage.getItem("ccc_level") || "1");
-        if (!(currentLevel >= 1 && currentLevel <= 4)) currentLevel = 1;
+        const levelMonthKey = sessionStorage.getItem("ccc_level_month");
+        const currentMonthKey = `${yy}-${String(mm).padStart(2, "0")}`;
 
+        if (levelMonthKey !== currentMonthKey) {
+          currentLevel = 1;
+          sessionStorage.setItem("ccc_level", "1");
+          sessionStorage.setItem("ccc_level_month", currentMonthKey);
+        } else {
+          currentLevel = Number(sessionStorage.getItem("ccc_level") || "1");
+        }
+        if (!(currentLevel >= 1 && currentLevel <= 4)) currentLevel = 1;
         if (currentLevel === 4) {
           showFinalSubmission();
         } else {
@@ -1580,6 +1588,7 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
         if (currentLevel < 3) {
           currentLevel += 1;
           sessionStorage.setItem("ccc_level", String(currentLevel));
+          sessionStorage.setItem("ccc_level_month", `${contest.year}-${String(contest.month).padStart(2, "0")}`);
           cipherInput.value = "";
           setStageLabel(currentLevel);
 
@@ -1594,6 +1603,7 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
         } else {
           currentLevel = 4;
           sessionStorage.setItem("ccc_level", "4");
+          sessionStorage.setItem("ccc_level_month", `${contest.year}-${String(contest.month).padStart(2, "0")}`);
           cipherInput.value = "";
           setStatus("恭喜完成所有階段！", "ok");
           showFinalSubmission();
@@ -1622,13 +1632,21 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
       }
 
       function updateMonthProgress() {
-        if (progressPanel.classList.contains("hidden")) return;
-
         const now = new Date();
+
+        // 沒有當月賽事：不更新進度條與倒計時
+        if (!contest) return;
+
+        const hktNow = dateInHKT(now);
+        if (Number(contest.year) !== hktNow.getUTCFullYear() ||
+            Number(contest.month) !== hktNow.getUTCMonth() + 1) {
+          return;
+        }
+
         const { start, nextStart, release: defaultRelease, year, month } = getMonthBounds(now);
 
         let release = defaultRelease;
-        if (contest && contest.endAt) {
+        if (contest.endAt) {
           const t = new Date(contest.endAt).getTime();
           if (!Number.isNaN(t)) release = t;
         }
@@ -1639,13 +1657,9 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
         $("progressPercent").textContent = `${percent}%`;
         $("progressTrack").setAttribute("aria-valuenow", String(percent));
         $("progressTitle").textContent = `${year} 年 ${month + 1} 月解密進度`;
-        $("monthDescription").textContent = contest
-          ? `本月主題：${contest.theme || "未設定"} · 每月一日開啟新挑戰`
-          : "每月一日開啟新挑戰，月底公布謎底。";
+        $("monthDescription").textContent = `本月主題：${contest.theme || "未設定"} · 每月一日開啟新挑戰`;
         $("periodStart").textContent = formatHKTDate(new Date(start));
         $("periodEnd").textContent = formatHKTDate(new Date(nextStart - 1));
-
-        if (!contest) return;
 
         let remaining = Math.max(0, release - now.getTime());
         const days = Math.floor(remaining / 86400000); remaining %= 86400000;
@@ -1662,6 +1676,7 @@ Play fair, or don't play. ☜(ﾟヮﾟ☜)
             ? "本月謎底公布時間已到。實際公布狀態請以 IT 學會公告為準。"
             : `距離暫定謎底公布時間尚有一段時間 · 香港時間 ${formatHKTDate(new Date(release))} 23:59`;
       }
+      
 
       updateMonthProgress();
       window.setInterval(updateMonthProgress, 1000);
